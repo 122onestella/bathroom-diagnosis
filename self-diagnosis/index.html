@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="ja" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>バスルーム・セルフ診断</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    :root{
+      /* ===== Font sizes (スマホで見やすい“100px前後”を基準) ===== */
+      --fs-title: 120px;
+      --fs-subtitle: 72px;
+      --fs-start-desc: 72px;
+      --fs-btn: 80px;
+
+      --fs-q: 96px;
+      --fs-opt: 80px;
+      --fs-chip: 56px;
+
+      --fs-result-title: 80px;
+      --fs-result-product: 104px;
+      --fs-result-desc: 76px;
+
+      /* ===== Colors (表紙のやさしい紙/アースカラー寄せ) ===== */
+      --paper: #fff8ef;
+      --paper2:#fffdf7;
+
+      /* ★ここが今回の “レモン背景”  */
+      --lemon: #fffbea;         /* 淡いレモン */
+      --lemon2: #fff7c9;        /* ほんの少し濃いめ（アクセント用） */
+
+      --ink: #4a2c0f;           /* 茶 */
+      --ink-soft:#6b4a2b;
+
+      /* ★質問バナーを淡いオレンジに */
+      --banner: #f4c7a6;        /* 淡オレンジ */
+      --banner2:#f2b98f;        /* 少し濃いめ */
+
+      --accent:#7aa37a;         /* くすみグリーン */
+      --accent2:#c79b6a;        /* くすみベージュ */
+      --card:#ffffff;
+
+      --line:#eadfd3;
+      --shadow: 0 18px 50px rgba(0,0,0,.18);
+      --shadow2: 0 10px 26px rgba(0,0,0,.12);
+      --radius: 24px;
+
+      /* ★結果の色指定 */
+      --navy: #1e3a8a;          /* 診断結果（ネイビー） */
+      --blue: #2563eb;          /* 商品名（ブルー） */
+    }
+
+    html, body { height:100%; width:100%; }
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0; padding:0;
+      font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(1200px 700px at 20% 10%, rgba(122,163,122,.18), transparent 60%),
+        radial-gradient(1000px 650px at 80% 20%, rgba(199,155,106,.18), transparent 60%),
+        linear-gradient(135deg, var(--paper) 0%, var(--paper2) 100%);
+      color: var(--ink);
+      overflow-x:hidden;
+    }
+
+    .app-container{
+      width:100%;
+      height:100%;
+      overflow-y:auto;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding: 22px;
+    }
+
+    /* ★背景ホワイト→淡いレモンへ */
+    .content-wrapper{
+      width:100%;
+      max-width:1080px;
+      background: var(--lemon);
+      border: 1px solid rgba(234,223,211,.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 34px 26px;
+      margin: 18px 0;
+    }
+
+    .header{
+      text-align:center;
+      margin-bottom: 28px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 12px;
+    }
+
+    .title{
+      font-size: var(--fs-title);
+      font-weight: 900;
+      line-height: 1.2;
+      color: var(--ink);
+      padding: 26px 44px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(245,239,232,.92));
+      box-shadow: var(--shadow2);
+      text-shadow: 0 2px 0 rgba(255,255,255,.85);
+      white-space: pre-line;
+      display:inline-block;
+      letter-spacing: .02em;
+    }
+
+    .subtitle{
+      font-size: var(--fs-subtitle);
+      color: var(--ink-soft);
+      margin: 0;
+      opacity: .9;
+    }
+
+    /* result screenではサブタイトル非表示 */
+    #resultScreen .header .subtitle{ display:none; }
+
+    .start-screen{
+      text-align:center;
+      padding: 28px 16px 10px;
+    }
+
+    .start-icon{
+      font-size: 96px;
+      margin: 6px 0 18px;
+      animation: floaty 2.3s ease-in-out infinite;
+    }
+
+    @keyframes floaty{
+      0%,100%{ transform: translateY(0); }
+      50%{ transform: translateY(-10px); }
+    }
+
+    .start-description{
+      font-size: var(--fs-start-desc);
+      color: #5a4633;
+      margin: 0 0 26px;
+      line-height: 1.55;
+    }
+
+    .btn{
+      background: linear-gradient(135deg, rgba(122,163,122,.95) 0%, rgba(199,155,106,.92) 100%);
+      color: #2f2216;
+      border: none;
+      padding: 24px 60px;
+      font-size: var(--fs-btn);
+      font-weight: 900;
+      border-radius: 18px;
+      cursor:pointer;
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+      box-shadow: 0 10px 26px rgba(122,163,122,.22);
+      width: 100%;
+      max-width: 640px;
+      white-space: pre-line;
+      line-height: 1.25;
+      letter-spacing: .02em;
+    }
+    .btn:hover{ transform: translateY(-2px); filter: brightness(1.02); box-shadow: 0 14px 32px rgba(122,163,122,.28); }
+    .btn:active{ transform: translateY(0); }
+
+    .progress-bar{
+      width:100%;
+      height: 12px;
+      background: rgba(234,223,211,.95);
+      border-radius: 999px;
+      overflow:hidden;
+      margin-bottom: 24px;
+    }
+    .progress-fill{
+      height: 100%;
+      background: linear-gradient(90deg, rgba(122,163,122,.95) 0%, rgba(199,155,106,.95) 100%);
+      transition: width .35s ease;
+      border-radius: 999px;
+    }
+
+    .question-container{ margin-bottom: 18px; }
+
+    /* ★質問バナー：淡いオレンジ＋文字は茶 */
+    .question-number{
+      display:inline-block;
+      background: linear-gradient(135deg, var(--banner) 0%, var(--banner2) 100%);
+      color: var(--ink);
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: var(--fs-chip);
+      font-weight: 900;
+      margin-bottom: 18px;
+      letter-spacing: .03em;
+      border: 1px solid rgba(74,44,15,.12);
+    }
+
+    .question-text{
+      font-size: var(--fs-q);
+      font-weight: 900;
+      color: var(--ink);
+      margin: 0 0 22px;
+      line-height: 1.35;
+      letter-spacing: .01em;
+    }
+
+    .options-grid{
+      display:flex;
+      flex-direction:column;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .option-card{
+      background: rgba(255,255,255,.92);
+      border: 3px solid rgba(234,223,211,.95);
+      border-radius: 18px;
+      padding: 22px 18px;
+      cursor:pointer;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      min-height: 120px;
+      box-shadow: 0 6px 16px rgba(0,0,0,.06);
+    }
+    .option-card:hover{
+      transform: translateY(-3px);
+      border-color: rgba(122,163,122,.65);
+      box-shadow: 0 10px 22px rgba(0,0,0,.10);
+    }
+    .option-card.selected{
+      border-color: rgba(122,163,122,.95);
+      background: linear-gradient(135deg, rgba(255,247,201,.55) 0%, rgba(199,155,106,.12) 100%);
+      box-shadow: 0 10px 22px rgba(122,163,122,.14);
+    }
+
+    .option-icon{ font-size: 64px; margin-bottom: 10px; }
+    .option-text{
+      font-size: var(--fs-opt);
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.25;
+      white-space: pre-line;
+      text-align:center;
+    }
+
+    .navigation-buttons{
+      display:flex;
+      justify-content:space-between;
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    .btn-secondary{
+      background: rgba(244,199,166,.55);
+      color: var(--ink);
+      padding: 18px 32px;
+      border: 1px solid rgba(74,44,15,.10);
+      border-radius: 16px;
+      font-size: var(--fs-btn);
+      font-weight: 900;
+      cursor:pointer;
+      transition: filter .2s ease;
+      flex:1;
+    }
+    .btn-secondary:hover{ filter: brightness(.98); }
+    .btn-secondary:disabled{ opacity:.55; cursor:not-allowed; }
+
+    /* ===== Result ===== */
+    .result-container{ text-align:center; }
+    .result-icon{ font-size: 96px; margin-bottom: 20px; animation: pop .6s ease; }
+    @keyframes pop{ 0%{transform:scale(0)} 70%{transform:scale(1.08)} 100%{transform:scale(1)} }
+
+    /* ★診断結果＝ネイビー */
+    .result-title{
+      font-size: var(--fs-result-title);
+      font-weight: 900;
+      margin: 0 0 18px;
+      color: var(--navy);
+      letter-spacing: .02em;
+    }
+
+    .result-loading{
+      font-size: 56px;
+      font-weight: 900;
+      color: rgba(122,163,122,.95);
+      margin: 46px 0;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.5} }
+
+    /* ★商品名＝ブルー＋白フチ（擬似アウトライン） */
+    .result-product{
+      font-size: var(--fs-result-product);
+      font-weight: 950;
+      color: var(--blue);
+      margin: 0 0 18px;
+      opacity:0;
+      animation: fadeUp .6s ease forwards;
+      text-shadow:
+        -3px -3px 0 #ffffff,
+         3px -3px 0 #ffffff,
+        -3px  3px 0 #ffffff,
+         3px  3px 0 #ffffff,
+         0   -3px 0 #ffffff,
+         0    3px 0 #ffffff,
+        -3px  0   0 #ffffff,
+         3px  0   0 #ffffff,
+        0 6px 14px rgba(0,0,0,.14);
+      letter-spacing: .02em;
+    }
+    @keyframes fadeUp{ from{opacity:0; transform: translateY(18px)} to{opacity:1; transform:none} }
+
+    .result-images{
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+      align-items:center;
+      opacity:0;
+      animation: fadeUp .6s ease .15s forwards;
+    }
+    .image-wrapper{ position:relative; display:inline-block; }
+    .result-image{
+      width:100%;
+      max-width: 560px;
+      height:auto;
+      border-radius: 18px;
+      margin: 12px auto;
+      box-shadow: 0 14px 34px rgba(0,0,0,.14);
+      display:block;
+    }
+
+    .result-description{
+      font-size: var(--fs-result-desc);
+      color: var(--ink);
+      line-height: 1.55;
+      margin: 18px 0 26px;
+      text-align:left;
+      background: linear-gradient(135deg, rgba(255,247,201,.65) 0%, rgba(244,199,166,.35) 100%);
+      padding: 22px;
+      border-radius: 16px;
+      border: 1px solid rgba(74,44,15,.08);
+    }
+
+    .btn-restart{
+      background: linear-gradient(135deg, rgba(122,163,122,.95) 0%, rgba(122,163,122,.78) 100%);
+      color: #2f2216;
+      padding: 18px 48px;
+      border:none;
+      border-radius: 16px;
+      font-size: 70px;
+      font-weight: 900;
+      cursor:pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+      box-shadow: 0 10px 26px rgba(122,163,122,.22);
+      width:100%;
+      max-width: 520px;
+      white-space: pre-line; /* ★「もう一度\n診断する」を効かせる */
+      line-height: 1.25;
+    }
+    .btn-restart:hover{ transform: translateY(-2px); box-shadow: 0 14px 32px rgba(122,163,122,.28); }
+
+    /* ===== Mobile ===== */
+    @media (max-width: 640px){
+      :root{
+        --fs-title: 64px;
+        --fs-subtitle: 22px;
+        --fs-start-desc: 22px;
+        --fs-btn: 24px;
+
+        --fs-q: 28px;
+        --fs-opt: 20px;
+        --fs-chip: 16px;
+
+        --fs-result-title: 26px;
+        --fs-result-product: 34px;
+        --fs-result-desc: 18px;
+      }
+      .content-wrapper{ padding: 22px 14px; }
+      .option-icon{ font-size: 42px; }
+      .btn{ padding: 18px 28px; }
+      .btn-secondary{ padding: 14px 18px; }
+      .result-loading{ font-size: 20px; }
+      .btn-restart{ font-size: 20px; }
+    }
+  </style>
+
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+</head>
+
+<body class="h-full">
+  <div class="app-container">
+    <div class="content-wrapper">
+      <header class="header">
+        <h1 class="title" id="mainTitle">バスルーム
+セルフ診断</h1>
+        <p class="subtitle" id="subtitle">あなたに最適なバスルームを見つけましょう</p>
+      </header>
+
+      <main id="startScreen" class="start-screen">
+        <div class="start-icon">🛁</div>
+        <p class="start-description">
+          簡単な質問に答えるだけで、あなたの暮らしにぴったりのバスルームをご提案します。<br />
+          所要時間：約2分
+        </p>
+        <button class="btn" id="startButton" onclick="startDiagnosis()">診断
+スタート</button>
+      </main>
+
+      <section id="questionScreen" style="display:none;">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width:0%;"></div>
+        </div>
+
+        <div class="question-container">
+          <span class="question-number" id="questionNumber">質問 1/8</span>
+          <h2 class="question-text" id="questionText"></h2>
+          <div class="options-grid" id="optionsContainer"></div>
+        </div>
+
+        <nav class="navigation-buttons">
+          <button class="btn-secondary" id="backButton" onclick="goBack()" disabled>戻る</button>
+          <button class="btn" id="nextButton" onclick="goNext()" disabled>次へ</button>
+        </nav>
+      </section>
+
+      <section id="resultScreen" style="display:none;">
+        <div class="result-container">
+          <div class="result-icon">🎉</div>
+          <h2 class="result-title">診断結果</h2>
+
+          <div id="resultLoading" class="result-loading">あなたの診断結果は・・・？</div>
+
+          <div id="resultContent" style="display:none;">
+            <div class="result-product" id="resultProduct"></div>
+
+            <div class="result-images">
+              <div class="image-wrapper">
+                <img id="resultImageMain" class="result-image" alt="おすすめ製品（メイン）"
+                     onerror="this.src=''; this.alt='画像を読み込めませんでした'; this.style.display='none';" />
+              </div>
+              <div class="image-wrapper">
+                <img id="resultImageSub" class="result-image" alt="おすすめ製品（サブ）"
+                     onerror="this.src=''; this.alt='画像を読み込めませんでした'; this.style.display='none';" />
+              </div>
+            </div>
+
+            <div class="result-description" id="resultDescription"></div>
+            <button class="btn-restart" onclick="restartDiagnosis()">もう一度
+診断する</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+<script>
+  const defaultConfig = {
+    main_title: "バスルーム\nセルフ診断",
+    subtitle: "あなたに最適なバスルームを見つけましょう",
+    start_button: "診断\nスタート"
+  };
+
+  const questions = [
+    {
+      id: 1,
+      text: "今のお風呂で気になっている部分を【2つまで】選んでください",
+      maxSelections: 2,
+      options: [
+        { icon: "🧊", text: "寒い・\nヒートショックが不安", value: "cold_concern" },
+        { icon: "✨", text: "掃除しても\n汚れやカビが落ちない", value: "cleaning_hard" },
+        { icon: "⚠️", text: "転んだり\nすべりそうで不安", value: "safety_concern" },
+        { icon: "💰", text: "浴槽のお湯が冷めやすい\n光熱費が気になる", value: "heat_cost" },
+        { icon: "🎨", text: "古さ・\n見た目が気になる", value: "appearance_old" }
+      ]
+    },
+    {
+      id: 2,
+      text: "お風呂で「これだけは譲れない」優先度が高いポイントを【2つまで】選んでください",
+      maxSelections: 2,
+      options: [
+        { icon: "♨️", text: "断熱性・\n温かさ", value: "insulation" },
+        { icon: "✨", text: "自動洗浄・除菌など\nお手入れがラク", value: "easy_clean" },
+        { icon: "💡", text: "節水・省エネなど\n光熱費を抑える", value: "energy_save" },
+        { icon: "🧘", text: "ファインバブルなど\nリラックス機能", value: "relax_function" },
+        { icon: "🎨", text: "スッキリ落ち着く\nデザイン", value: "design_calm" }
+      ]
+    },
+    {
+      id: 3,
+      text: "あなたのお風呂の入り方で一番近いものを【1つ】選んでください",
+      options: [
+        { icon: "⚡", text: "サッと入って\nすぐ出る", value: "quick" },
+        { icon: "🧘", text: "1日の疲れを\nしっかり癒したい", value: "relax_deep" },
+        { icon: "👶", text: "子どもと入ることが\n多い", value: "with_kids" },
+        { icon: "🌙", text: "自分だけの\nリラックスタイムが大事", value: "personal_relax" }
+      ]
+    },
+    {
+      id: 4,
+      text: "お風呂掃除について一番近いものを【1つ】選んでください",
+      options: [
+        { icon: "✨", text: "なるべく\nラクにしたい", value: "easy_clean_priority" },
+        { icon: "📅", text: "週1くらいで\n一気に掃除したい", value: "weekly_clean" },
+        { icon: "🤖", text: "自動の洗浄機能に\n興味がある", value: "auto_clean_interest" },
+        { icon: "💭", text: "特になし", value: "no_preference" }
+      ]
+    },
+    {
+      id: 5,
+      text: "光熱費についての考え方で一番近いものを【1つ】選んでください",
+      options: [
+        { icon: "💰", text: "毎月のランニングコストは\nできるだけ抑えたい", value: "cost_priority" },
+        { icon: "⚖️", text: "気になるが\n快適さを優先したい", value: "comfort_priority" },
+        { icon: "🌟", text: "あまり意識していない", value: "not_concerned" }
+      ]
+    },
+    {
+      id: 6,
+      text: "お風呂の「空間」で一番近いイメージはどれですか？【1つ】",
+      options: [
+        { icon: "🏨", text: "ホテルライクで\n高級感のある空間", value: "luxury_hotel" },
+        { icon: "✨", text: "明るく清潔感の\nある空間", value: "bright_clean" },
+        { icon: "🌳", text: "木のぬくもりを\n感じる空間", value: "natural_wood" },
+        { icon: "🎯", text: "鏡やカウンターを減らした\nスッキリ空間", value: "minimalist" }
+      ]
+    },
+    {
+      id: 7,
+      text: "直感で「好き」なお風呂のイメージを【1つ】選んでください",
+      options: [
+        { icon: "💎", text: "明るく上品な\nストーン調", value: "stone" },
+        { icon: "🌲", text: "木のぬくもり\nナチュラルウッド調", value: "natural_wood_style" },
+        { icon: "🖤", text: "落ち着いた\nブラックシック調", value: "black_chic" }
+      ]
+    },
+    {
+      id: 8,
+      text: "新しいお風呂にこれだけは譲れない、と思うものを【2つまで】選んでください",
+      maxSelections: 2,
+      options: [
+        { icon: "🔥", text: "寒さから\n解放されたい", value: "warm" },
+        { icon: "✨", text: "掃除から\n解放されたい", value: "easy_maintenance" },
+        { icon: "💰", text: "水道・光熱費を\n抑えたい", value: "utility_save" },
+        { icon: "🧘", text: "癒しの空間に\n変えたい", value: "healing" },
+        { icon: "🎨", text: "見た目を\n新しくしたい", value: "aesthetic" },
+        { icon: "💭", text: "なんとなく\n気になっている", value: "curious" }
+      ]
+    }
+  ];
+
+  const productImages = {
+    'サザナ': { main: 'https://i.imgur.com/xdQVq0N.png', sub: 'https://i.imgur.com/quvtqCQ.png' },
+    'シンラ': { main: 'https://i.imgur.com/A2hRr0s.png', sub: 'https://i.imgur.com/JfPpbvJ.png' },
+    'リデア': { main: 'https://i.imgur.com/ENM59T6.png', sub: 'https://i.imgur.com/LKbKQ3M.png' },
+    'スパージュ': { main: 'https://i.imgur.com/PC1fALn.png', sub: null },
+    'グランスパ': { main: 'https://i.imgur.com/Rjhtb77.png', sub: null },
+    'ラクヴィア': { main: 'https://i.imgur.com/JammMXT.png', sub: null },
+    'セレヴィア': { main: 'https://i.imgur.com/gc6Qat0.png', sub: null },
+    'every': { main: 'https://i.imgur.com/UUR1X1j.png', sub: null },
+    'AXIY': { main: 'https://i.imgur.com/P6lkQtn.png', sub: null }
+  };
+
+  let currentQuestion = 0;
+  let answers = {};
+  let selectedOption = null;
+  let selectedOptions = [];
+
+  function startDiagnosis(){
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('questionScreen').style.display = 'block';
+    currentQuestion = 0;
+    answers = {};
+    showQuestion();
+  }
+
+  function showQuestion(){
+    const q = questions[currentQuestion];
+    const progress = ((currentQuestion + 1) / questions.length) * 100;
+    document.getElementById('progressFill').style.width = progress + '%';
+    document.getElementById('questionNumber').textContent = `質問 ${currentQuestion + 1}/${questions.length}`;
+    document.getElementById('questionText').textContent = q.text;
+
+    const optionsContainer = document.getElementById('optionsContainer');
+    optionsContainer.innerHTML = '';
+
+    const isMulti = q.maxSelections && q.maxSelections > 1;
+
+    q.options.forEach((opt, idx) => {
+      const card = document.createElement('div');
+      card.className = 'option-card';
+      card.innerHTML = `
+        <div class="option-icon">${opt.icon}</div>
+        <div class="option-text">${opt.text}</div>
+      `;
+      card.onclick = isMulti
+        ? () => selectMultipleOptions(idx, opt.value, q.maxSelections)
+        : () => selectOption(idx, opt.value);
+      optionsContainer.appendChild(card);
+    });
+
+    if (isMulti){
+      selectedOptions = answers[q.id] || [];
+      const cards = document.querySelectorAll('.option-card');
+      selectedOptions.forEach(v => {
+        const i = q.options.findIndex(o => o.value === v);
+        if (i !== -1) cards[i].classList.add('selected');
+      });
+    }else{
+      selectedOption = answers[q.id] || null;
+      if (selectedOption){
+        const i = q.options.findIndex(o => o.value === selectedOption);
+        if (i !== -1){
+          const cards = document.querySelectorAll('.option-card');
+          cards[i].classList.add('selected');
+        }
+      }
+    }
+
+    updateNavigationButtons();
+  }
+
+  function selectOption(index, value){
+    const cards = document.querySelectorAll('.option-card');
+    cards.forEach((c,i)=>c.classList.toggle('selected', i===index));
+    selectedOption = value;
+    answers[questions[currentQuestion].id] = value;
+    updateNavigationButtons();
+  }
+
+  function selectMultipleOptions(index, value, maxSelections){
+    const cards = document.querySelectorAll('.option-card');
+    const card = cards[index];
+
+    if (selectedOptions.includes(value)){
+      selectedOptions = selectedOptions.filter(v => v !== value);
+      card.classList.remove('selected');
+    }else{
+      if (selectedOptions.length < maxSelections){
+        selectedOptions.push(value);
+        card.classList.add('selected');
+      }
+    }
+    answers[questions[currentQuestion].id] = selectedOptions;
+    updateNavigationButtons();
+  }
+
+  function updateNavigationButtons(){
+    const q = questions[currentQuestion];
+    const isMulti = q.maxSelections && q.maxSelections > 1;
+
+    document.getElementById('backButton').disabled = currentQuestion === 0;
+    document.getElementById('nextButton').disabled = isMulti ? (selectedOptions.length < 1) : (selectedOption === null);
+  }
+
+  function goBack(){
+    if (currentQuestion <= 0) return;
+    currentQuestion--;
+    const q = questions[currentQuestion];
+    const isMulti = q.maxSelections && q.maxSelections > 1;
+    if (isMulti) selectedOptions = answers[q.id] || [];
+    else selectedOption = answers[q.id] || null;
+    showQuestion();
+  }
+
+  function goNext(){
+    const q = questions[currentQuestion];
+    const isMulti = q.maxSelections && q.maxSelections > 1;
+    if (isMulti && selectedOptions.length === 0) return;
+    if (!isMulti && selectedOption === null) return;
+
+    if (currentQuestion < questions.length - 1){
+      currentQuestion++;
+      const nq = questions[currentQuestion];
+      const nIsMulti = nq.maxSelections && nq.maxSelections > 1;
+      if (nIsMulti) selectedOptions = answers[nq.id] || [];
+      else selectedOption = answers[nq.id] || null;
+      showQuestion();
+    }else{
+      showResult();
+    }
+  }
+
+  function showResult(){
+    document.getElementById('subtitle').style.display = 'none';
+    document.getElementById('questionScreen').style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+
+    document.getElementById('resultLoading').style.display = 'block';
+    document.getElementById('resultContent').style.display = 'none';
+
+    const result = calculateResult();
+
+    setTimeout(() => {
+      document.getElementById('resultLoading').style.display = 'none';
+      document.getElementById('resultContent').style.display = 'block';
+
+      document.getElementById('resultProduct').textContent = result.product;
+
+      const mainImg = document.getElementById('resultImageMain');
+      const subImg  = document.getElementById('resultImageSub');
+      const mainWrapper = mainImg.closest('.image-wrapper');
+      const subWrapper  = subImg.closest('.image-wrapper');
+
+      if (result.mainImage){
+        mainImg.src = result.mainImage;
+        mainImg.style.display = 'block';
+        mainWrapper.style.display = 'inline-block';
+      }else{
+        mainImg.style.display = 'none';
+        mainWrapper.style.display = 'none';
+      }
+
+      if (result.subImage){
+        subImg.src = result.subImage;
+        subImg.style.display = 'block';
+        subWrapper.style.display = 'inline-block';
+      }else{
+        subImg.style.display = 'none';
+        subWrapper.style.display = 'none';
+      }
+
+      document.getElementById('resultDescription').textContent = result.description;
+    }, 1200);
+  }
+
+  function calculateResult(){
+    const concernsQ1 = Array.isArray(answers[1]) ? answers[1] : [answers[1]];
+    const prioritiesQ2 = Array.isArray(answers[2]) ? answers[2] : [answers[2]];
+    const bathStyle = answers[3];
+    const cleaningPreference = answers[4];
+    const utilityCost = answers[5];
+    const spaceImage = answers[6];
+    const stylePreference = answers[7];
+    const mustHaveQ8 = Array.isArray(answers[8]) ? answers[8] : [answers[8]];
+
+    const concernCold = concernsQ1.includes('cold_concern');
+    const concernCleaning = concernsQ1.includes('cleaning_hard');
+    const concernSafety = concernsQ1.includes('safety_concern');
+    const concernHeatCost = concernsQ1.includes('heat_cost');
+    const concernAppearance = concernsQ1.includes('appearance_old');
+
+    const priorityInsulation = prioritiesQ2.includes('insulation');
+    const priorityEasyClean = prioritiesQ2.includes('easy_clean');
+    const priorityEnergySave = prioritiesQ2.includes('energy_save');
+    const priorityRelax = prioritiesQ2.includes('relax_function');
+    const priorityDesign = prioritiesQ2.includes('design_calm');
+
+    const mustWarm = mustHaveQ8.includes('warm');
+    const mustEasyMaintenance = mustHaveQ8.includes('easy_maintenance');
+    const mustUtilitySave = mustHaveQ8.includes('utility_save');
+    const mustHealing = mustHaveQ8.includes('healing');
+    const mustAesthetic = mustHaveQ8.includes('aesthetic');
+
+    let product = 'サザナ';
+    let description = 'バランスの取れた標準的なバスルームです。';
+
+    if (concernCold){
+      if (utilityCost === 'cost_priority' || concernsQ1.includes('heat_cost')){
+        product = 'セレヴィア';
+        description = '断熱性能と省エネ設計で、寒さ・ヒートショックの不安を減らし、光熱費も抑えられます。';
+      }else{
+        product = 'サザナ';
+        description = '断熱性能で浴室の寒さを和らげ、ヒートショック対策にもつながります。';
+      }
+    }
+
+    if (concernCleaning){
+      if (cleaningPreference === 'auto_clean_interest' || priorityEasyClean){
+        product = 'ラクヴィア';
+        description = '自動洗浄・除菌機能でカビや汚れのストレスを軽減。お掃除の負担を大幅に減らせます。';
+      }else if (cleaningPreference === 'easy_clean_priority'){
+        product = 'every';
+        description = 'お手入れしやすい設計で、サッと掃除が完了。キレイが続きやすいバスルームです。';
+      }
+    }
+
+    if (concernsQ1.includes('heat_cost') && !concernCold){
+      product = 'セレヴィア';
+      description = '保温性と省エネ設計で、お湯が冷めにくく、光熱費も抑えやすいモデルです。';
+    }
+
+    if (concernAppearance){
+      if (utilityCost !== 'cost_priority'){
+        product = 'グランスパ';
+        description = '洗練されたデザインで空間を一新。見た目も気分も変えたい方におすすめです。';
+      }
+    }
+
+    if (concernSafety){
+      product = 'サザナ';
+      description = '滑りにくい床や手すり対応で安全性を重視。転倒リスクを軽減します。';
+    }
+
+    if (cleaningPreference === 'auto_clean_interest'){
+      product = 'ラクヴィア';
+      description = '自動洗浄機能で日々のお掃除から解放。清潔を保ちやすいバスルームです。';
+    }
+
+    if (spaceImage === 'luxury_hotel'){
+      if (utilityCost !== 'cost_priority'){
+        if (priorityRelax){
+          product = 'シンラ';
+          description = 'ファインバブルなど上質な癒し機能で、自宅をホテルライクな極上空間に。';
+        }else{
+          product = 'スパージュ';
+          description = '高級感とデザイン性を重視。毎日のバスタイムが特別な時間になります。';
+        }
+      }
+    }else if (spaceImage === 'bright_clean'){
+      if (priorityEasyClean || cleaningPreference === 'auto_clean_interest'){
+        product = 'ラクヴィア';
+        description = '明るく清潔感のある空間に、手間を減らす機能をプラス。キレイが続きます。';
+      }else if (utilityCost === 'cost_priority'){
+        product = 'セレヴィア';
+        description = '清潔感と省エネを両立。光熱費を抑えながら快適に過ごせます。';
+      }
+    }else if (spaceImage === 'natural_wood'){
+      if (utilityCost !== 'cost_priority' && !concernCleaning){
+        product = 'AXIY';
+        description = '木のぬくもりを感じる癒し空間。自然素材の雰囲気でリラックスできます。';
+      }
+    }else if (spaceImage === 'minimalist'){
+      if (priorityDesign && utilityCost !== 'cost_priority'){
+        product = 'グランスパ';
+        description = '無駄を削ぎ落としたスッキリ空間。洗練されたデザインが特徴です。';
+      }else if (utilityCost === 'cost_priority' && !concernCleaning){
+        product = 'リデア';
+        description = '必要な機能をコンパクトに。シンプルで掃除もしやすい設計です。';
+      }
+    }
+
+    if (utilityCost === 'cost_priority'){
+      if (priorityEnergySave || concernHeatCost || mustUtilitySave){
+        product = 'セレヴィア';
+        description = '省エネ性能で水道・光熱費を抑えやすいモデル。経済性重視の方におすすめです。';
+      }
+    }
+
+    if ((bathStyle === 'relax_deep' || bathStyle === 'personal_relax') && priorityRelax && utilityCost !== 'cost_priority'){
+      product = 'シンラ';
+      description = '癒し機能が充実。1日の疲れをしっかり癒したい方におすすめです。';
+    }
+
+    if (priorityInsulation && utilityCost !== 'cost_priority'){
+      product = 'サザナ';
+      description = '断熱性能に優れ、温かさが続きやすいお風呂です。';
+    }
+
+    if (mustWarm && utilityCost !== 'cost_priority'){
+      product = 'シンラ';
+      description = '高い断熱性能で温かさを逃しにくいモデル。冬でも快適です。';
+    }
+
+    if (mustEasyMaintenance){
+      product = (cleaningPreference === 'auto_clean_interest' || utilityCost !== 'cost_priority') ? 'ラクヴィア' : 'every';
+      description = (product === 'ラクヴィア')
+        ? '自動洗浄機能でお掃除の手間を大幅に削減。清潔を保ちやすいです。'
+        : 'お手入れしやすい設計で、掃除の負担を軽減。コストも抑えやすいモデルです。';
+    }
+
+    if (mustHealing && utilityCost !== 'cost_priority'){
+      product = 'シンラ';
+      description = '癒しの機能が充実。心身を整える“ご褒美バスタイム”を叶えます。';
+    }
+
+    if (mustAesthetic){
+      product = (utilityCost !== 'cost_priority') ? 'スパージュ' : 'グランスパ';
+      description = (product === 'スパージュ')
+        ? 'デザイン性と高級感を重視。見た目も気分も上がるバスルームです。'
+        : '洗練されたデザインで空間を一新。スタイリッシュに仕上げたい方へ。';
+    }
+
+    if (stylePreference === 'stone'){
+      description += ' ストーン調のアクセントで、明るく上品な雰囲気に。';
+    }else if (stylePreference === 'natural_wood_style'){
+      description += ' 木目調でやさしい温もりを感じる空間に。';
+    }else if (stylePreference === 'black_chic'){
+      description += ' ブラック系で落ち着いた大人の空間に。';
+    }
+
+    const mainImageUrl = productImages[product]?.main || '';
+    const subImageUrl  = productImages[product]?.sub  || '';
+
+    return { product, mainImage: mainImageUrl, subImage: subImageUrl, description };
+  }
+
+  function restartDiagnosis(){
+    document.getElementById('subtitle').style.display = 'block';
+    document.getElementById('resultScreen').style.display = 'none';
+    document.getElementById('startScreen').style.display = 'block';
+    currentQuestion = 0;
+    answers = {};
+    selectedOption = null;
+    selectedOptions = [];
+  }
+
+  async function onConfigChange(config){
+    const mainTitle = config.main_title || defaultConfig.main_title;
+    const subtitle = config.subtitle || defaultConfig.subtitle;
+    const startButton = config.start_button || defaultConfig.start_button;
+
+    document.getElementById('mainTitle').textContent = mainTitle;
+    document.getElementById('subtitle').textContent = subtitle;
+    document.getElementById('startButton').textContent = startButton;
+  }
+
+  if (window.elementSdk){
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange,
+      mapToCapabilities: () => ({ recolorables: [], borderables: [], fontEditable: undefined, fontSizeable: undefined }),
+      mapToEditPanelValues: (config) => new Map([
+        ["main_title", config.main_title || defaultConfig.main_title],
+        ["subtitle", config.subtitle || defaultConfig.subtitle],
+        ["start_button", config.start_button || defaultConfig.start_button]
+      ])
+    });
+  }
+</script>
+</body>
+</html>
