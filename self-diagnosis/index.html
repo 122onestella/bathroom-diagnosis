@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ja" class="h-full">
 <head>
@@ -22,32 +23,17 @@
       --fs-result-desc: 76px;
 
       /* ===== Colors (表紙のやさしい紙/アースカラー寄せ) ===== */
-      --paper: #fff8ef;
-      --paper2:#fffdf7;
-
-      /* ★ここが今回の “レモン背景”  */
-      --lemon: #fffbea;         /* 淡いレモン */
-      --lemon2: #fff7c9;        /* ほんの少し濃いめ（アクセント用） */
-
-      --ink: #4a2c0f;           /* 茶 */
+      --paper: #eaf7ff;
+      --paper2:#f6fcff;
+      --ink: #4a2c0f;
       --ink-soft:#6b4a2b;
-
-      /* ★質問バナーを淡いオレンジに */
-      --banner: #f4c7a6;        /* 淡オレンジ */
-      --banner2:#f2b98f;        /* 少し濃いめ */
-
-      --accent:#7aa37a;         /* くすみグリーン */
-      --accent2:#c79b6a;        /* くすみベージュ */
+      --accent:#7aa37a;     /* くすみグリーン */
+      --accent2:#c79b6a;    /* くすみベージュ */
       --card:#ffffff;
-
       --line:#eadfd3;
       --shadow: 0 18px 50px rgba(0,0,0,.18);
       --shadow2: 0 10px 26px rgba(0,0,0,.12);
       --radius: 24px;
-
-      /* ★結果の色指定 */
-      --navy: #1e3a8a;          /* 診断結果（ネイビー） */
-      --blue: #2563eb;          /* 商品名（ブルー） */
     }
 
     html, body { height:100%; width:100%; }
@@ -56,9 +42,15 @@
     body{
       margin:0; padding:0;
       font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      /* ふんわり水色＋泡っぽい柄 */
       background:
-        radial-gradient(1200px 700px at 20% 10%, rgba(122,163,122,.18), transparent 60%),
-        radial-gradient(1000px 650px at 80% 20%, rgba(199,155,106,.18), transparent 60%),
+        radial-gradient(circle at 12% 18%, rgba(255,255,255,.75) 0 22px, transparent 23px),
+        radial-gradient(circle at 28% 70%, rgba(255,255,255,.55) 0 18px, transparent 19px),
+        radial-gradient(circle at 62% 24%, rgba(255,255,255,.65) 0 26px, transparent 27px),
+        radial-gradient(circle at 78% 62%, rgba(255,255,255,.55) 0 20px, transparent 21px),
+        radial-gradient(circle at 90% 18%, rgba(255,255,255,.45) 0 14px, transparent 15px),
+        radial-gradient(1200px 700px at 20% 10%, rgba(122,163,122,.10), transparent 60%),
+        radial-gradient(1000px 650px at 80% 20%, rgba(199,155,106,.10), transparent 60%),
         linear-gradient(135deg, var(--paper) 0%, var(--paper2) 100%);
       color: var(--ink);
       overflow-x:hidden;
@@ -74,16 +66,16 @@
       padding: 22px;
     }
 
-    /* ★背景ホワイト→淡いレモンへ */
     .content-wrapper{
       width:100%;
       max-width:1080px;
-      background: var(--lemon);
-      border: 1px solid rgba(234,223,211,.9);
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(234,223,211,.8);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 34px 26px;
       margin: 18px 0;
+      backdrop-filter: blur(6px);
     }
 
     .header{
@@ -95,19 +87,24 @@
       gap: 12px;
     }
 
-    .title{
+    /* 表紙の“ふわっとした見出しパネル”っぽい感じ */
+        .title{
       font-size: var(--fs-title);
       font-weight: 900;
-      line-height: 1.2;
+      line-height: 1.15;
       color: var(--ink);
-      padding: 26px 44px;
+      padding: 22px 28px;
       border-radius: 22px;
-      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(245,239,232,.92));
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(240,248,255,.92));
       box-shadow: var(--shadow2);
       text-shadow: 0 2px 0 rgba(255,255,255,.85);
-      white-space: pre-line;
       display:inline-block;
       letter-spacing: .02em;
+      max-width: 100%;
+    }
+    .title-line{
+      display:block;
+      white-space: nowrap; /* バスルームを途中で改行させない */
     }
 
     .subtitle{
@@ -166,7 +163,7 @@
     .progress-bar{
       width:100%;
       height: 12px;
-      background: rgba(234,223,211,.95);
+      background: rgba(234,223,211,.9);
       border-radius: 999px;
       overflow:hidden;
       margin-bottom: 24px;
@@ -180,24 +177,22 @@
 
     .question-container{ margin-bottom: 18px; }
 
-    /* ★質問バナー：淡いオレンジ＋文字は茶 */
     .question-number{
       display:inline-block;
-      background: linear-gradient(135deg, var(--banner) 0%, var(--banner2) 100%);
-      color: var(--ink);
+      background: linear-gradient(135deg, rgba(122,163,122,.95) 0%, rgba(199,155,106,.92) 100%);
+      color:#2f2216;
       padding: 10px 22px;
       border-radius: 999px;
       font-size: var(--fs-chip);
       font-weight: 900;
       margin-bottom: 18px;
       letter-spacing: .03em;
-      border: 1px solid rgba(74,44,15,.12);
     }
 
     .question-text{
       font-size: var(--fs-q);
       font-weight: 900;
-      color: var(--ink);
+      color: #2f2216;
       margin: 0 0 22px;
       line-height: 1.35;
       letter-spacing: .01em;
@@ -211,7 +206,7 @@
     }
 
     .option-card{
-      background: rgba(255,255,255,.92);
+      background: rgba(255,255,255,.9);
       border: 3px solid rgba(234,223,211,.95);
       border-radius: 18px;
       padding: 22px 18px;
@@ -232,7 +227,7 @@
     }
     .option-card.selected{
       border-color: rgba(122,163,122,.95);
-      background: linear-gradient(135deg, rgba(255,247,201,.55) 0%, rgba(199,155,106,.12) 100%);
+      background: linear-gradient(135deg, rgba(122,163,122,.10) 0%, rgba(199,155,106,.10) 100%);
       box-shadow: 0 10px 22px rgba(122,163,122,.14);
     }
 
@@ -240,7 +235,7 @@
     .option-text{
       font-size: var(--fs-opt);
       font-weight: 800;
-      color: var(--ink);
+      color: #2f2216;
       line-height: 1.25;
       white-space: pre-line;
       text-align:center;
@@ -254,10 +249,10 @@
     }
 
     .btn-secondary{
-      background: rgba(244,199,166,.55);
-      color: var(--ink);
+      background: rgba(234,223,211,.95);
+      color: #3c2b1c;
       padding: 18px 32px;
-      border: 1px solid rgba(74,44,15,.10);
+      border:none;
       border-radius: 16px;
       font-size: var(--fs-btn);
       font-weight: 900;
@@ -273,13 +268,11 @@
     .result-icon{ font-size: 96px; margin-bottom: 20px; animation: pop .6s ease; }
     @keyframes pop{ 0%{transform:scale(0)} 70%{transform:scale(1.08)} 100%{transform:scale(1)} }
 
-    /* ★診断結果＝ネイビー */
     .result-title{
       font-size: var(--fs-result-title);
       font-weight: 900;
       margin: 0 0 18px;
-      color: var(--navy);
-      letter-spacing: .02em;
+      color:#2f2216;
     }
 
     .result-loading{
@@ -291,25 +284,13 @@
     }
     @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.5} }
 
-    /* ★商品名＝ブルー＋白フチ（擬似アウトライン） */
     .result-product{
       font-size: var(--fs-result-product);
       font-weight: 950;
-      color: var(--blue);
+      color: #2f2216;
       margin: 0 0 18px;
       opacity:0;
       animation: fadeUp .6s ease forwards;
-      text-shadow:
-        -3px -3px 0 #ffffff,
-         3px -3px 0 #ffffff,
-        -3px  3px 0 #ffffff,
-         3px  3px 0 #ffffff,
-         0   -3px 0 #ffffff,
-         0    3px 0 #ffffff,
-        -3px  0   0 #ffffff,
-         3px  0   0 #ffffff,
-        0 6px 14px rgba(0,0,0,.14);
-      letter-spacing: .02em;
     }
     @keyframes fadeUp{ from{opacity:0; transform: translateY(18px)} to{opacity:1; transform:none} }
 
@@ -334,14 +315,14 @@
 
     .result-description{
       font-size: var(--fs-result-desc);
-      color: var(--ink);
+      color: #3c2b1c;
       line-height: 1.55;
       margin: 18px 0 26px;
       text-align:left;
-      background: linear-gradient(135deg, rgba(255,247,201,.65) 0%, rgba(244,199,166,.35) 100%);
+      background: linear-gradient(135deg, rgba(122,163,122,.10) 0%, rgba(199,155,106,.12) 100%);
       padding: 22px;
       border-radius: 16px;
-      border: 1px solid rgba(74,44,15,.08);
+      border: 1px solid rgba(234,223,211,.9);
     }
 
     .btn-restart{
@@ -357,15 +338,13 @@
       box-shadow: 0 10px 26px rgba(122,163,122,.22);
       width:100%;
       max-width: 520px;
-      white-space: pre-line; /* ★「もう一度\n診断する」を効かせる */
-      line-height: 1.25;
     }
     .btn-restart:hover{ transform: translateY(-2px); box-shadow: 0 14px 32px rgba(122,163,122,.28); }
 
     /* ===== Mobile ===== */
     @media (max-width: 640px){
       :root{
-        --fs-title: 64px;
+        --fs-title: 48px;
         --fs-subtitle: 22px;
         --fs-start-desc: 22px;
         --fs-btn: 24px;
@@ -379,6 +358,8 @@
         --fs-result-desc: 18px;
       }
       .content-wrapper{ padding: 22px 14px; }
+      .title{ padding: 16px 16px; }
+
       .option-icon{ font-size: 42px; }
       .btn{ padding: 18px 28px; }
       .btn-secondary{ padding: 14px 18px; }
@@ -396,8 +377,7 @@
   <div class="app-container">
     <div class="content-wrapper">
       <header class="header">
-        <h1 class="title" id="mainTitle">バスルーム
-セルフ診断</h1>
+        <h1 class="title" id="mainTitle"><span class="title-line">バスルーム</span><span class="title-line">セルフ診断</span></h1>
         <p class="subtitle" id="subtitle">あなたに最適なバスルームを見つけましょう</p>
       </header>
 
@@ -407,8 +387,7 @@
           簡単な質問に答えるだけで、あなたの暮らしにぴったりのバスルームをご提案します。<br />
           所要時間：約2分
         </p>
-        <button class="btn" id="startButton" onclick="startDiagnosis()">診断
-スタート</button>
+        <button class="btn" id="startButton" onclick="startDiagnosis()">✿ ここから診断スタート ✿</button>
       </main>
 
       <section id="questionScreen" style="display:none;">
@@ -450,8 +429,7 @@
             </div>
 
             <div class="result-description" id="resultDescription"></div>
-            <button class="btn-restart" onclick="restartDiagnosis()">もう一度
-診断する</button>
+            <button class="btn-restart" onclick="restartDiagnosis()">もう一度診断する</button>
           </div>
         </div>
       </section>
@@ -463,7 +441,7 @@
   const defaultConfig = {
     main_title: "バスルーム\nセルフ診断",
     subtitle: "あなたに最適なバスルームを見つけましょう",
-    start_button: "診断\nスタート"
+    start_button: "✿ ここから診断スタート ✿"
   };
 
   const questions = [
@@ -761,7 +739,7 @@
     let description = 'バランスの取れた標準的なバスルームです。';
 
     if (concernCold){
-      if (utilityCost === 'cost_priority' || concernsQ1.includes('heat_cost')){
+      if (utilityCost === 'cost_priority' || concernHeatCost){
         product = 'セレヴィア';
         description = '断熱性能と省エネ設計で、寒さ・ヒートショックの不安を減らし、光熱費も抑えられます。';
       }else{
@@ -780,7 +758,7 @@
       }
     }
 
-    if (concernsQ1.includes('heat_cost') && !concernCold){
+    if (concernHeatCost && !concernCold){
       product = 'セレヴィア';
       description = '保温性と省エネ設計で、お湯が冷めにくく、光熱費も抑えやすいモデルです。';
     }
@@ -876,6 +854,7 @@
         : '洗練されたデザインで空間を一新。スタイリッシュに仕上げたい方へ。';
     }
 
+    /* 好みのテイストで追記 */
     if (stylePreference === 'stone'){
       description += ' ストーン調のアクセントで、明るく上品な雰囲気に。';
     }else if (stylePreference === 'natural_wood_style'){
@@ -900,15 +879,26 @@
     selectedOptions = [];
   }
 
+
+  function renderMultiline(el, text){
+    const parts = String(text || "").split("\n");
+    el.innerHTML = parts.map(p => `<span class="title-line">${escapeHtml(p)}</span>`).join("");
+  }
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, (m) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+    }[m]));
+  }
+
   async function onConfigChange(config){
     const mainTitle = config.main_title || defaultConfig.main_title;
     const subtitle = config.subtitle || defaultConfig.subtitle;
     const startButton = config.start_button || defaultConfig.start_button;
 
-    document.getElementById('mainTitle').textContent = mainTitle;
-    document.getElementById('subtitle').textContent = subtitle;
+    renderMultiline(document.getElementById('mainTitle'), mainTitle);
+document.getElementById('subtitle').textContent = subtitle;
     document.getElementById('startButton').textContent = startButton;
-  }
+}
 
   if (window.elementSdk){
     window.elementSdk.init({
