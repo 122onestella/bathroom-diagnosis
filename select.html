@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>水廻りセルフ診断｜選択</title>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #f7f2ea;
+    }
+
+    .wrap {
+      display: grid;
+      place-items: center;
+      padding: 12px;
+    }
+
+    .image-box {
+      position: relative;
+      width: min(980px, 100%);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 18px 50px rgba(0,0,0,.18);
+    }
+
+    .image-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* 透明ボタン共通 */
+    .hit {
+      position: absolute;
+      cursor: pointer;
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* 上：バスルーム診断 */
+    .bathroom {
+      top: 55%;
+      left: 5%;
+      width: 40%;
+      height: 35%;
+    }
+
+    /* 下：キッチン診断 */
+    .kitchen {
+      top: 55%;
+      right: 5%;
+      width: 40%;
+      height: 35%;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="image-box">
+      <img src="./images/select.png" alt="バスルーム診断・キッチン診断を選択">
+
+      <!-- バスルーム診断 -->
+      <a class="hit bathroom" href="./bathroom.html" aria-label="バスルーム診断へ"></a>
+
+      <!-- キッチン診断 -->
+      <a class="hit kitchen" href="./kitchen.html" aria-label="キッチン診断へ"></a>
+    </div>
+  </div>
+</body>
+</html>
