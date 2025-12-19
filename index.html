@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>水廻りセルフ診断｜入口</title>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body { background: #f7f2ea; }
+
+    /* 画面いっぱいに画像を綺麗に表示 */
+    .wrap {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 12px;
+    }
+
+    /* 画像リンク（タップ領域） */
+    a.hero {
+      display: block;
+      width: min(980px, 100%);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 18px 50px rgba(0,0,0,.18);
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+      transform: translateZ(0);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    a.hero:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 60px rgba(0,0,0,.22);
+    }
+    a.hero:active {
+      transform: translateY(0);
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ちいさな補助テキスト（なくてもOK） */
+    .hint {
+      margin-top: 10px;
+      font-family: "Noto Sans JP", system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: rgba(60,43,28,.75);
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- 画像をタップしたら select.html へ -->
+    <a class="hero" href="./select.html" aria-label="診断を選ぶ画面へ">
+      <img src="./images/entrance.png" alt="あなただけの水廻りセルフ診断 ここから診断スタート">
+    </a>
+
+    <div class="hint">画像をタップすると診断選択に進みます</div>
+  </div>
+</body>
+</html>
