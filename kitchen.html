@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>キッチン・セルフ診断</title>
 
-  <!-- Manus/Element SDK を使う場合だけ残す（使ってないなら消してOK） -->
-  <script src="/_sdk/element_sdk.js"></script>
-
   <style>
     :root{
       /* ===== Font sizes (responsive) ===== */
@@ -24,14 +21,16 @@
       --fs-result-product: clamp(26px, 5.0vw, 68px);
       --fs-result-desc: clamp(18px, 3.6vw, 46px);
 
-      /* ===== Colors (bathroom と揃えた系統) ===== */
-      --bg1: #cfe9ff;     /* light sky */
-      --bg2: #ffd7f0;     /* soft pink */
-      --paper: #fff6b8;   /* lemon */
+      /* ===== Colors (same as bathroom) ===== */
+      --bg1: #cfe9ff;
+      --bg2: #ffd7f0;
+      --paper: #fff6b8;
+      --paper2:#fffdf7;
       --ink: #4a2c0f;
       --ink-soft:#6b4a2b;
       --accent:#7aa37a;
       --accent2:#c79b6a;
+      --card:#ffffff;
       --line:#eadfd3;
       --shadow: 0 18px 50px rgba(0,0,0,.18);
       --shadow2: 0 10px 26px rgba(0,0,0,.12);
@@ -120,7 +119,6 @@
       box-shadow: 0 10px 24px rgba(0,0,0,.08);
     }
 
-    /* 質問画面も同じレモン背景に統一 */
     #questionScreen{
       background: linear-gradient(180deg, rgba(255,246,184,.92), rgba(255,246,184,.72));
       border: 1px solid rgba(234,223,211,.65);
@@ -134,6 +132,7 @@
       margin: 14px 0 12px;
       animation: floaty 2.3s ease-in-out infinite;
     }
+
     @keyframes floaty{
       0%,100%{ transform: translateY(0); }
       50%{ transform: translateY(-10px); }
@@ -160,7 +159,7 @@
       box-shadow: 0 10px 26px rgba(122,163,122,.22);
       width: 100%;
       max-width: 520px;
-      white-space: pre-line; /* <br>も \n もどっちもOK */
+      white-space: pre-line;
       line-height: 1.15;
       letter-spacing: .02em;
       margin: 0 auto 14px;
@@ -340,6 +339,78 @@
       border: 1px solid rgba(234,223,211,.9);
     }
 
+    /* ===== CTA block ===== */
+    .cta{
+      text-align:left;
+      margin: 14px 0 10px;
+      background: rgba(255,255,255,.86);
+      border: 2px dashed rgba(12, 86, 163, .28);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.06);
+    }
+    .cta h3{
+      margin: 0 0 10px;
+      font-size: clamp(20px, 4.0vw, 44px);
+      font-weight: 950;
+      color: #0b2a66;
+      line-height: 1.2;
+    }
+    .cta p{
+      margin: 0 0 12px;
+      font-size: clamp(16px, 3.2vw, 38px);
+      line-height: 1.55;
+      color: #3c2b1c;
+    }
+    .cta ul{
+      margin: 0 0 12px 1.2em;
+      padding: 0;
+      font-size: clamp(16px, 3.2vw, 38px);
+      line-height: 1.55;
+      color: #3c2b1c;
+    }
+    .cta .mini{
+      font-size: clamp(14px, 2.8vw, 32px);
+      color: rgba(60,43,28,.85);
+      margin-top: 6px;
+    }
+
+    .btn-line{
+      background: linear-gradient(135deg, rgba(8,191,84,.95) 0%, rgba(8,191,84,.75) 100%);
+      color: #fff;
+      border: none;
+      padding: 16px 18px;
+      border-radius: 16px;
+      font-size: var(--fs-btn);
+      font-weight: 900;
+      cursor:pointer;
+      width:100%;
+      max-width: 520px;
+      white-space: pre-line;
+      box-shadow: 0 10px 26px rgba(8,191,84,.18);
+      margin: 0 auto 12px;
+      display:block;
+    }
+    .btn-line:hover{ filter: brightness(1.02); }
+
+    .btn-pay{
+      background: linear-gradient(135deg, rgba(199,155,106,.98) 0%, rgba(12, 86, 163, .88) 100%);
+      color: #fff;
+      border:none;
+      padding: 16px 18px;
+      border-radius: 16px;
+      font-size: var(--fs-btn);
+      font-weight: 900;
+      cursor:pointer;
+      width:100%;
+      max-width: 520px;
+      white-space: pre-line;
+      box-shadow: 0 10px 26px rgba(12, 86, 163, .18);
+      margin: 0 auto 8px;
+      display:block;
+    }
+    .btn-pay:hover{ filter: brightness(1.02); }
+
     .btn-restart{
       background: linear-gradient(135deg, rgba(12, 86, 163, .95) 0%, rgba(12, 86, 163, .75) 100%);
       color: #ffffff;
@@ -352,8 +423,10 @@
       transition: transform .2s ease, box-shadow .2s ease;
       box-shadow: 0 10px 26px rgba(12, 86, 163, .22);
       white-space: pre-line;
-      width: 100%;
+      width:100%;
       max-width: 520px;
+      margin: 0 auto;
+      display:block;
     }
     .btn-restart:hover{ transform: translateY(-2px); box-shadow: 0 14px 32px rgba(12, 86, 163, .28); }
   </style>
@@ -363,6 +436,7 @@
   <div class="app-container">
     <div class="content-wrapper">
       <header class="header">
+        <!-- 2行固定（シリーズ統一） -->
         <h1 class="title" id="mainTitle">キッチン<br>セルフ診断</h1>
         <p class="subtitle" id="subtitle">あなたにぴったりの<br>キッチンタイプを見つけましょう。</p>
       </header>
@@ -370,10 +444,11 @@
       <main id="startScreen" class="start-screen">
         <div class="start-icon">🍳</div>
         <p class="start-description">
-          質問に答えるだけで、<br />あなたにぴったりのキッチンをご提案します。<br />
+          質問に答えるだけで、<br>あなたにぴったりのキッチンをご提案します。<br>
           所要時間：約2分
         </p>
-        <button class="btn" id="startButton" type="button" onclick="startDiagnosis()">診断<br>スタート</button>
+        <button class="btn" id="startButton" type="button" onclick="startDiagnosis()">診断
+スタート</button>
       </main>
 
       <section id="questionScreen" style="display:none;">
@@ -415,19 +490,61 @@
             </div>
 
             <div class="result-description" id="resultDescription"></div>
-            <button class="btn-restart" type="button" onclick="restartDiagnosis()">もう一度<br>診断する</button>
+
+            <!-- CTA（バスルームと同じ導線） -->
+            <div class="cta" id="ctaBlock">
+              <h3>この結果をもとに、<br>“あなたのお家のアフター”を見てみませんか？</h3>
+              <p>
+                診断結果が「文字」だけだと、イメージが湧きにくいことも。<br>
+                今の写真（ビフォー）をもとに、あなたに合う雰囲気の“アフターイメージ”を作ることもできます。
+              </p>
+              <ul>
+                <li>あなたの診断結果を反映した <strong>アフターイメージ</strong></li>
+                <li>「水廻りを選ぶ時のポイント10選（PDF）」</li>
+              </ul>
+              <p><strong>お試しセット：300円</strong></p>
+
+              <button class="btn-line" type="button" onclick="openLine()">
+                公式LINEで<br>相談する
+              </button>
+              <button class="btn-pay" type="button" onclick="openPayment()">
+                300円セットを<br>申し込む
+              </button>
+
+              <div class="mini">
+                ※今の写真（ビフォー）と診断結果（スクショ）をLINEで送るだけでOKです。
+              </div>
+            </div>
+
+            <button class="btn-restart" type="button" onclick="restartDiagnosis()">もう一度
+診断する</button>
           </div>
         </div>
       </section>
+
     </div>
   </div>
 
 <script>
-  const defaultConfig = {
-    main_title: "キッチン<br>セルフ診断",
-    subtitle: "あなたにぴったりの<br>キッチンタイプを見つけましょう。",
-    start_button: "診断<br>スタート"
-  };
+  // ★差し替え用（あとでURLを入れるだけ）
+  const LINE_URL = "（ここに公式LINEのURLを入れる）";
+  const PAYMENT_URL = "（ここに決済リンクのURLを入れる）";
+
+  function openLine(){
+    if(!LINE_URL || LINE_URL.includes("ここに")){
+      alert("LINEのURLが未設定です。LINE_URLを差し替えてね。");
+      return;
+    }
+    window.open(LINE_URL, "_blank");
+  }
+
+  function openPayment(){
+    if(!PAYMENT_URL || PAYMENT_URL.includes("ここに")){
+      alert("決済リンクが未設定です。PAYMENT_URLを差し替えてね。");
+      return;
+    }
+    window.open(PAYMENT_URL, "_blank");
+  }
 
   const questions = [
     {
@@ -447,7 +564,7 @@
       text: "キッチン選びで「これだけは譲れない」と思うポイントを【2つまで】選んでください",
       maxSelections: 2,
       options: [
-        { icon: "🧼", text: "掃除のしやすさ", value: "priority_cleaning" },
+        { icon: "🧼", text: "掃除の\nしやすさ", value: "priority_cleaning" },
         { icon: "📦", text: "収納力", value: "priority_storage" },
         { icon: "💪", text: "丈夫さ・長持ち\nすること", value: "priority_durability" },
         { icon: "🎨", text: "見た目\nデザイン性", value: "priority_design" },
@@ -460,7 +577,7 @@
       options: [
         { icon: "🧊", text: "人工大理石の\nやわらかい質感が好き", value: "material_artificial_stone" },
         { icon: "✨", text: "ステンレスの\nスッキリした感じが好き", value: "material_stainless" },
-        { icon: "🔥", text: "ホーローなど\n汚れに強い素材が良い", value: "material_enamel" },
+        { icon: "🔥", text: "ホーローなど、\n汚れに強い素材が良い", value: "material_enamel" },
         { icon: "💭", text: "素材には\nあまりこだわらない", value: "material_any" }
       ]
     },
@@ -468,7 +585,7 @@
       id: 4,
       text: "食洗機について一番近いものを【1つ】選んでください",
       options: [
-        { icon: "🙅‍♀️", text: "食洗機は要らない", value: "dw_none" },
+        { icon: "🙅‍♀️", text: "食洗機は\n要らない", value: "dw_none" },
         { icon: "📥", text: "引き出し式の\n標準的な食洗機が欲しい", value: "dw_drawer" },
         { icon: "📦", text: "フルオープンの\n大きな食洗機が欲しい", value: "dw_full" },
         { icon: "🌍", text: "気に入っている食洗機がある\n（海外製など）", value: "dw_special" }
@@ -499,9 +616,9 @@
       id: 7,
       text: "レンジフード（換気扇）の掃除について、一番近いものを【1つ】選んでください",
       options: [
-        { icon: "😵", text: "正直ほとんど掃除したくない\n（自動洗浄が気になる）", value: "hood_auto" },
-        { icon: "🧽", text: "今よりラクになれば嬉しい", value: "hood_easier" },
-        { icon: "💭", text: "特にこだわりはない", value: "hood_any" }
+        { icon: "😵", text: "正直ほとんど\n掃除したくない\n（自動洗浄が気になる）", value: "hood_auto" },
+        { icon: "🧽", text: "今よりラクになれば\n嬉しい", value: "hood_easier" },
+        { icon: "💭", text: "特にこだわりは\nない", value: "hood_any" }
       ]
     },
     {
@@ -510,21 +627,21 @@
       options: [
         { icon: "💰", text: "できるだけ抑えたい\n（ベーシック重視）", value: "budget_low" },
         { icon: "⚖️", text: "金額と使いやすさの\nバランスを重視したい", value: "budget_mid" },
-        { icon: "🌟", text: "多少高くても、使いやすさや\nデザインを優先したい", value: "budget_high" }
+        { icon: "🌟", text: "多少高くても、\n使いやすさやデザインを優先したい", value: "budget_high" }
       ]
     }
   ];
 
   const productImages = {
-    'ミッテ': { main: 'https://i.imgur.com/lYwGJb9.png', sub: '' },
+    'ミッテ':   { main: 'https://i.imgur.com/lYwGJb9.png', sub: '' },
     'クラッソ': { main: 'https://i.imgur.com/1j3C9xW.png', sub: '' },
-    'シエラ': { main: 'https://i.imgur.com/5Kd6OcS.png', sub: '' },
-    'ノクト': { main: 'https://i.imgur.com/joEDAPT.png', sub: '' },
+    'シエラ':   { main: 'https://i.imgur.com/5Kd6OcS.png', sub: '' },
+    'ノクト':   { main: 'https://i.imgur.com/joEDAPT.png', sub: '' },
     'エーデル': { main: 'https://i.imgur.com/FOL09ua.png', sub: '' },
     'トレーシア': { main: 'https://i.imgur.com/scc3cmK.png', sub: '' },
     'ラクエラ': { main: 'https://i.imgur.com/1NXJzz5.png', sub: '' },
     'ステディア': { main: 'https://i.imgur.com/Yr4i1xz.png', sub: '' },
-    'Bb＋': { main: 'https://i.imgur.com/NZu094j.png', sub: '' },
+    'Bb＋':     { main: 'https://i.imgur.com/NZu094j.png', sub: '' },
     'コラージア': { main: 'https://i.imgur.com/BDjyXwa.png', sub: '' }
   };
 
@@ -649,36 +766,40 @@
     }else{
       document.getElementById('questionScreen').style.display = 'none';
       document.getElementById('resultScreen').style.display = 'block';
-      showResult();
+      calculateResult();
     }
   }
 
-  function showResult(){
+  function calculateResult(){
     document.getElementById('resultLoading').style.display = 'block';
     document.getElementById('resultContent').style.display = 'none';
 
-    const result = calculateResult();
+    const result = calculateKitchenResult();
 
     setTimeout(() => {
       document.getElementById('resultLoading').style.display = 'none';
       document.getElementById('resultContent').style.display = 'block';
 
       document.getElementById('resultProduct').textContent = result.product;
+      document.getElementById('resultDescription').textContent = result.description;
 
+      const images = productImages[result.product] || { main:'', sub:'' };
       const mainImg = document.getElementById('resultImageMain');
       const subImg  = document.getElementById('resultImageSub');
 
-      mainImg.src = result.mainImage || '';
-      mainImg.style.display = result.mainImage ? 'block' : 'none';
+      mainImg.src = images.main || '';
+      mainImg.style.display = images.main ? 'block' : 'none';
+      mainImg.alt = `${result.product} (メイン)`;
 
-      subImg.src = result.subImage || '';
-      subImg.style.display = result.subImage ? 'block' : 'none';
+      subImg.src = images.sub || '';
+      subImg.style.display = images.sub ? 'block' : 'none';
+      subImg.alt = `${result.product} (サブ)`;
 
-      document.getElementById('resultDescription').textContent = result.description;
     }, 1500);
   }
 
-  function calculateResult() {
+  // ★ あやなのロジックをそのまま移植（名前だけ整理）
+  function calculateKitchenResult(){
     const concernsQ1 = Array.isArray(answers[1]) ? answers[1] : [answers[1]];
     const prioritiesQ2 = Array.isArray(answers[2]) ? answers[2] : [answers[2]];
     const material = answers[3];
@@ -690,6 +811,9 @@
 
     const concernCleaning = concernsQ1.includes('concern_cleaning');
     const concernStorage = concernsQ1.includes('concern_storage');
+    const concernSpace = concernsQ1.includes('concern_space');
+    const concernDesign = concernsQ1.includes('concern_design');
+    const concernFlow = concernsQ1.includes('concern_flow');
 
     const priorityCleaning = prioritiesQ2.includes('priority_cleaning');
     const priorityStorage = prioritiesQ2.includes('priority_storage');
@@ -756,20 +880,65 @@
       }
     }
 
+    if (material === 'material_artificial_stone' && budget !== 'budget_low') {
+      if (style === 'style_natural' || style === 'style_bright') {
+        if (!['トレーシア', 'エーデル'].includes(product)) {
+          if (budget === 'budget_high') {
+            product = 'トレーシア';
+            description = '人工大理石の美しい質感と高級感。明るく上品な空間を演出する最上級キッチンです。';
+          } else {
+            product = 'エーデル';
+            description = '人工大理石のやわらかな質感が魅力。ナチュラルで温かみのある空間を実現します。';
+          }
+        }
+      }
+    }
+
+    if (sink === 'sink_workflow') {
+      if (budget === 'budget_high') {
+        product = 'トレーシア';
+        description = '調理中の動線や作業効率をしっかり考えたキッチン。段取りよく作業したい方におすすめです。';
+      } else if (priorityStorage) {
+        product = 'コラージア';
+        description = '作業のしやすさと収納計画を両立したキッチン。シンクまわりも含めて片づけやすく動きやすいレイアウトが特長です。';
+      } else {
+        product = 'ノクト';
+        description = '落ち着いたデザインと、作業しやすいレイアウトが魅力のキッチン。毎日の料理がスムーズになります。';
+      }
+    }
+
+    if (style === 'style_chic' && !['ノクト', 'Bb＋'].includes(product) && budget !== 'budget_low') {
+      if (budget === 'budget_high') {
+        product = 'トレーシア';
+        description = 'ブラック系のシックなデザインで高級感を演出。洗練された大人の空間を作り出します。';
+      } else {
+        product = 'ノクト';
+        description = '落ち着いたダークトーンが特徴。モダンで洗練された雰囲気のキッチンです。';
+      }
+    }
+
     if (style === 'style_cafe' && budget !== 'budget_low') {
       product = 'Bb＋';
       description = 'カフェのようなおしゃれな雰囲気。個性的なデザインと使い勝手の良さが魅力のキッチンです。';
     }
 
-    const mainImageUrl = productImages[product]?.main || '';
-    const subImageUrl  = productImages[product]?.sub  || '';
+    if (dishwasher === 'dw_full' && budget !== 'budget_low') {
+      if (budget === 'budget_high' && !['クラッソ', 'トレーシア'].includes(product)) {
+        description += ' フルオープン食洗機にも対応可能で、大容量の洗浄が可能です。';
+      }
+    }
 
-    return {
-      product,
-      mainImage: mainImageUrl,
-      subImage: subImageUrl,
-      description
-    };
+    if (dishwasher === 'dw_special' && budget === 'budget_high') {
+      description += ' 海外製食洗機など、お好みの機器にもカスタマイズ対応できます。';
+    }
+
+    if (sink === 'sink_wide' && priorityWorkflow) {
+      description += ' 広々としたシンクで作業効率も抜群です。';
+    } else if (sink === 'sink_cleaning' && priorityCleaning) {
+      description += ' シンクの掃除がしやすい設計で、日々のお手入れがラクラクです。';
+    }
+
+    return { product, description };
   }
 
   function restartDiagnosis(){
@@ -781,34 +950,10 @@
     selectedOptions = [];
   }
 
-  /* ===== elementSdk: <br> を反映するため innerHTML を使う（この3項目だけ） ===== */
-  async function onConfigChange(config){
-    const mainTitle = config.main_title || defaultConfig.main_title;
-    const subtitle  = config.subtitle || defaultConfig.subtitle;
-    const startBtn  = config.start_button || defaultConfig.start_button;
-
-    document.getElementById('mainTitle').innerHTML = mainTitle;
-    document.getElementById('subtitle').innerHTML  = subtitle;
-    document.getElementById('startButton').innerHTML = startBtn;
-  }
-
-  if (window.elementSdk){
-    window.elementSdk.init({
-      defaultConfig,
-      onConfigChange,
-      mapToCapabilities: () => ({
-        recolorables: [],
-        borderables: [],
-        fontEditable: undefined,
-        fontSizeable: undefined
-      }),
-      mapToEditPanelValues: (config) => new Map([
-        ["main_title",  config.main_title  || defaultConfig.main_title],
-        ["subtitle",    config.subtitle    || defaultConfig.subtitle],
-        ["start_button",config.start_button|| defaultConfig.start_button]
-      ])
-    });
-  }
+  // “診断スタート”改行を安定化
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('startButton').textContent = "診断\nスタート";
+  });
 </script>
 </body>
 </html>
