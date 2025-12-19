@@ -6,7 +6,6 @@
   <title>バスルーム・セルフ診断</title>
   <style>
     :root{
-      /* ===== Font sizes (responsive) ===== */
       --fs-title: clamp(40px, 7.2vw, 92px);
       --fs-subtitle: clamp(18px, 3.2vw, 44px);
       --fs-start-desc: clamp(18px, 3.2vw, 40px);
@@ -20,10 +19,9 @@
       --fs-result-product: clamp(26px, 5.0vw, 68px);
       --fs-result-desc: clamp(18px, 3.6vw, 46px);
 
-      /* ===== Colors ===== */
-      --bg1: #cfe9ff;     /* light sky */
-      --bg2: #ffd7f0;     /* soft pink */
-      --paper: #fff6b8;   /* lemon (panel background) */
+      --bg1: #cfe9ff;
+      --bg2: #ffd7f0;
+      --paper: #fff6b8;
       --paper2:#fffdf7;
       --ink: #4a2c0f;
       --ink-soft:#6b4a2b;
@@ -42,7 +40,6 @@
     body{
       margin:0; padding:0;
       font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      /* 背景：水色×ピンクのふんわり */
       background:
         radial-gradient(900px 600px at 25% 15%, rgba(255,255,255,.65), transparent 60%),
         radial-gradient(1000px 700px at 85% 25%, rgba(255,255,255,.55), transparent 62%),
@@ -81,7 +78,6 @@
       gap: 10px;
     }
 
-    /* 表紙の“ふわっとした見出しパネル” */
     .title{
       font-size: var(--fs-title);
       font-weight: 900;
@@ -108,7 +104,6 @@
       width: min(92%, 900px);
     }
 
-    /* result screenではサブタイトル非表示 */
     #resultScreen .header .subtitle{ display:none; }
 
     .start-screen{
@@ -118,6 +113,14 @@
       border: 1px solid rgba(234,223,211,.65);
       border-radius: 22px;
       box-shadow: 0 10px 24px rgba(0,0,0,.08);
+    }
+
+    #questionScreen{
+      background: linear-gradient(180deg, rgba(255,246,184,.92), rgba(255,246,184,.72));
+      border: 1px solid rgba(234,223,211,.65);
+      border-radius: 22px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+      padding: 10px 10px 4px;
     }
 
     .start-icon{
@@ -179,7 +182,7 @@
 
     .question-number{
       display:inline-block;
-      background: linear-gradient(135deg, rgba(255,214,141,.95) 0%, rgba(255,184,107,.92) 100%); /* 淡いオレンジ */
+      background: linear-gradient(135deg, rgba(255,214,141,.95) 0%, rgba(255,184,107,.92) 100%);
       color:#4a2c0f;
       padding: 10px 18px;
       border-radius: 999px;
@@ -274,7 +277,7 @@
       font-size: var(--fs-result-title);
       font-weight: 900;
       margin: 0 0 14px;
-      color:#0b2a66; /* ネイビー */
+      color:#0b2a66;
       letter-spacing: .02em;
     }
 
@@ -290,7 +293,7 @@
     .result-product{
       font-size: var(--fs-result-product);
       font-weight: 950;
-      color: #0c56a3; /* ブルー */
+      color: #0c56a3;
       -webkit-text-stroke: 2px rgba(255,255,255,.95);
       text-shadow:
         0 2px 0 rgba(255,255,255,.85),
@@ -332,6 +335,78 @@
       border: 1px solid rgba(234,223,211,.9);
     }
 
+    /* ===== CTA block (NEW) ===== */
+    .cta{
+      text-align:left;
+      margin: 14px 0 10px;
+      background: rgba(255,255,255,.86);
+      border: 2px dashed rgba(12, 86, 163, .28);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.06);
+    }
+    .cta h3{
+      margin: 0 0 10px;
+      font-size: clamp(20px, 4.0vw, 44px);
+      font-weight: 950;
+      color: #0b2a66;
+      line-height: 1.2;
+    }
+    .cta p{
+      margin: 0 0 12px;
+      font-size: clamp(16px, 3.2vw, 38px);
+      line-height: 1.55;
+      color: #3c2b1c;
+    }
+    .cta ul{
+      margin: 0 0 12px 1.2em;
+      padding: 0;
+      font-size: clamp(16px, 3.2vw, 38px);
+      line-height: 1.55;
+      color: #3c2b1c;
+    }
+    .cta .mini{
+      font-size: clamp(14px, 2.8vw, 32px);
+      color: rgba(60,43,28,.85);
+      margin-top: 6px;
+    }
+
+    .btn-line{
+      background: linear-gradient(135deg, rgba(8,191,84,.95) 0%, rgba(8,191,84,.75) 100%);
+      color: #fff;
+      border: none;
+      padding: 16px 18px;
+      border-radius: 16px;
+      font-size: var(--fs-btn);
+      font-weight: 900;
+      cursor:pointer;
+      width:100%;
+      max-width: 520px;
+      white-space: pre-line;
+      box-shadow: 0 10px 26px rgba(8,191,84,.18);
+      margin: 0 auto 12px;
+      display:block;
+    }
+    .btn-line:hover{ filter: brightness(1.02); }
+
+    .btn-pay{
+      background: linear-gradient(135deg, rgba(199,155,106,.98) 0%, rgba(12, 86, 163, .88) 100%);
+      color: #fff;
+      border:none;
+      padding: 16px 18px;
+      border-radius: 16px;
+      font-size: var(--fs-btn);
+      font-weight: 900;
+      cursor:pointer;
+      width:100%;
+      max-width: 520px;
+      white-space: pre-line;
+      box-shadow: 0 10px 26px rgba(12, 86, 163, .18);
+      margin: 0 auto 8px;
+      display:block;
+    }
+    .btn-pay:hover{ filter: brightness(1.02); }
+
     .btn-restart{
       background: linear-gradient(135deg, rgba(12, 86, 163, .95) 0%, rgba(12, 86, 163, .75) 100%);
       color: #ffffff;
@@ -343,13 +418,11 @@
       cursor:pointer;
       transition: transform .2s ease, box-shadow .2s ease;
       box-shadow: 0 10px 26px rgba(12, 86, 163, .22);
+      white-space: pre-line;
       width:100%;
       max-width: 520px;
-      white-space: pre-line;
-      line-height: 1.15;
-    
-      white-space: pre-line;
-      line-height: 1.15;
+      margin: 0 auto;
+      display:block;
     }
     .btn-restart:hover{ transform: translateY(-2px); box-shadow: 0 14px 32px rgba(12, 86, 163, .28); }
   </style>
@@ -359,7 +432,6 @@
   <div class="app-container">
     <div class="content-wrapper">
       <header class="header">
-        <!-- 2行固定 -->
         <h1 class="title" id="mainTitle">バスルーム<br>セルフ診断</h1>
         <p class="subtitle" id="subtitle">あなたにびったりの<br>バスルームを見つけましょう。</p>
       </header>
@@ -367,11 +439,11 @@
       <main id="startScreen" class="start-screen">
         <div class="start-icon">🛁</div>
         <p class="start-description">
-          簡単な質問に答えるだけで、あなたの暮らしにぴったりのバスルームをご提案します。<br />
+          質問に答えるだけで、<br />あなたにぴったりのバスルームをご提案します。<br />
           所要時間：約2分
         </p>
-        <!-- ボタン改行 -->
-        <button class="btn" id="startButton" type="button" onclick="startDiagnosis()">診断\nスタート</button>
+        <button class="btn" id="startButton" type="button" onclick="startDiagnosis()">診断
+スタート</button>
       </main>
 
       <section id="questionScreen" style="display:none;">
@@ -413,7 +485,36 @@
             </div>
 
             <div class="result-description" id="resultDescription"></div>
-            <button class="btn-restart" type="button" onclick="restartDiagnosis()">もう一度<br>診断する</button>
+
+            <!-- ★ ここからCTA（NEW） -->
+            <div class="cta" id="ctaBlock">
+              <h3>この結果をもとに、<br>“あなたのお家のアフター”を見てみませんか？</h3>
+              <p>
+                診断結果が「文字」だけだと、イメージが湧きにくいことも。<br>
+                今の写真（ビフォー）をもとに、あなたに合う雰囲気の“アフターイメージ”を作ることもできます。
+              </p>
+              <ul>
+                <li>あなたの診断結果を反映した <strong>アフターイメージ</strong></li>
+                <li>「水廻りを選ぶ時のポイント10選（PDF）」</li>
+              </ul>
+              <p><strong>お試しセット：300円</strong></p>
+
+              <!-- ここを差し替え -->
+              <button class="btn-line" type="button" onclick="openLine()">
+                公式LINEで<br>相談する
+              </button>
+              <button class="btn-pay" type="button" onclick="openPayment()">
+                300円セットを<br>申し込む
+              </button>
+
+              <div class="mini">
+                ※今の写真（ビフォー）と診断結果（スクショ）をLINEで送るだけでOKです。
+              </div>
+            </div>
+            <!-- ★ CTAここまで -->
+
+            <button class="btn-restart" type="button" onclick="restartDiagnosis()">もう一度
+診断する</button>
           </div>
         </div>
       </section>
@@ -422,6 +523,26 @@
   </div>
 
 <script>
+  // ★差し替え用（あやなが後でURLを入れるだけ）
+  const LINE_URL = "（ここに公式LINEのURLを入れる）";
+  const PAYMENT_URL = "（ここに決済リンクのURLを入れる）";
+
+  function openLine(){
+    if(!LINE_URL || LINE_URL.includes("ここに")){
+      alert("LINEのURLが未設定です。LINE_URLを差し替えてね。");
+      return;
+    }
+    window.open(LINE_URL, "_blank");
+  }
+
+  function openPayment(){
+    if(!PAYMENT_URL || PAYMENT_URL.includes("ここに")){
+      alert("決済リンクが未設定です。PAYMENT_URLを差し替えてね。");
+      return;
+    }
+    window.open(PAYMENT_URL, "_blank");
+  }
+
   const questions = [
     {
       id: 1,
@@ -629,222 +750,67 @@
   function goNext(){
     const q = questions[currentQuestion];
     const isMulti = q.maxSelections && q.maxSelections > 1;
-    if (isMulti && selectedOptions.length === 0) return;
-    if (!isMulti && selectedOption === null) return;
+    const isAnswered = isMulti ? (selectedOptions.length > 0) : (selectedOption !== null);
+
+    if (!isAnswered) return;
 
     if (currentQuestion < questions.length - 1){
       currentQuestion++;
-      const nq = questions[currentQuestion];
-      const nIsMulti = nq.maxSelections && nq.maxSelections > 1;
-      if (nIsMulti) selectedOptions = answers[nq.id] || [];
-      else selectedOption = answers[nq.id] || null;
+      const nextQ = questions[currentQuestion];
+      const nextIsMulti = nextQ.maxSelections && nextQ.maxSelections > 1;
+      if (nextIsMulti) selectedOptions = answers[nextQ.id] || [];
+      else selectedOption = answers[nextQ.id] || null;
       showQuestion();
     }else{
-      showResult();
+      document.getElementById('questionScreen').style.display = 'none';
+      document.getElementById('resultScreen').style.display = 'block';
+      calculateResult();
     }
   }
 
-  function showResult(){
-    document.getElementById('questionScreen').style.display = 'none';
-    document.getElementById('resultScreen').style.display = 'block';
-
+  function calculateResult(){
     document.getElementById('resultLoading').style.display = 'block';
     document.getElementById('resultContent').style.display = 'none';
 
-    const result = calculateResult();
+    const allAnswers = Object.values(answers).flat();
+    const counts = allAnswers.reduce((acc, val) => {
+      acc[val] = (acc[val] || 0) + 1;
+      return acc;
+    }, {});
+
+    let resultProduct = 'サザナ';
+    let resultDesc = 'お客様の回答から、**サザナ**が最も適していると診断されました。サザナは、ほっカラリ床や魔法びん浴槽など、快適とエコを両立した機能が充実しており、多くの方におすすめできるモデルです。';
+
+    if (counts['relax_deep'] || counts['personal_relax'] || counts['luxury_hotel']){
+      resultProduct = 'シンラ';
+      resultDesc = 'お客様は、お風呂での**リラックスタイム**を特に重視されているようです。**シンラ**は、肩楽湯や打たせ湯など、極上のリラックス機能と上質なデザインを兼ね備えた、最高級のバスルームです。';
+    } else if (counts['easy_clean'] || counts['easy_clean_priority'] || counts['auto_clean_interest']){
+      resultProduct = 'リデア';
+      resultDesc = 'お客様は、**お手入れのしやすさ**を重視されているようです。**リデア**は、まる洗いカウンターやくるりんポイ排水口など、日々の掃除を劇的にラクにする機能が満載のモデルです。';
+    } else if (counts['warm'] || counts['insulation'] || counts['heat_cost']){
+      resultProduct = 'スパージュ';
+      resultDesc = 'お客様は、**温かさ**と**省エネ**を重視されているようです。**スパージュ**は、高い断熱性能と、お湯が冷めにくい構造で、冬でも快適なバスタイムを実現します。';
+    }
 
     setTimeout(() => {
       document.getElementById('resultLoading').style.display = 'none';
       document.getElementById('resultContent').style.display = 'block';
+      document.getElementById('resultProduct').textContent = resultProduct;
+      document.getElementById('resultDescription').innerHTML = resultDesc.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-      document.getElementById('resultProduct').textContent = result.product;
-
+      const images = productImages[resultProduct] || { main:'', sub:'' };
       const mainImg = document.getElementById('resultImageMain');
-      const subImg  = document.getElementById('resultImageSub');
-      const mainWrapper = mainImg.closest('.image-wrapper');
-      const subWrapper  = subImg.closest('.image-wrapper');
+      const subImg = document.getElementById('resultImageSub');
 
-      if (result.mainImage){
-        mainImg.src = result.mainImage;
-        mainImg.style.display = 'block';
-        mainWrapper.style.display = 'block';
-      }else{
-        mainImg.style.display = 'none';
-        mainWrapper.style.display = 'none';
-      }
+      mainImg.src = images.main;
+      mainImg.style.display = images.main ? 'block' : 'none';
+      mainImg.alt = `${resultProduct} (メイン)`;
 
-      if (result.subImage){
-        subImg.src = result.subImage;
-        subImg.style.display = 'block';
-        subWrapper.style.display = 'block';
-      }else{
-        subImg.style.display = 'none';
-        subWrapper.style.display = 'none';
-      }
+      subImg.src = images.sub;
+      subImg.style.display = images.sub ? 'block' : 'none';
+      subImg.alt = `${resultProduct} (サブ)`;
 
-      document.getElementById('resultDescription').textContent = result.description;
-    }, 900);
-  }
-
-  function calculateResult(){
-    const concernsQ1 = Array.isArray(answers[1]) ? answers[1] : [answers[1]];
-    const prioritiesQ2 = Array.isArray(answers[2]) ? answers[2] : [answers[2]];
-    const bathStyle = answers[3];
-    const cleaningPreference = answers[4];
-    const utilityCost = answers[5];
-    const spaceImage = answers[6];
-    const stylePreference = answers[7];
-    const mustHaveQ8 = Array.isArray(answers[8]) ? answers[8] : [answers[8]];
-
-    const concernCold = concernsQ1.includes('cold_concern');
-    const concernCleaning = concernsQ1.includes('cleaning_hard');
-    const concernSafety = concernsQ1.includes('safety_concern');
-    const concernHeatCost = concernsQ1.includes('heat_cost');
-    const concernAppearance = concernsQ1.includes('appearance_old');
-
-    const priorityInsulation = prioritiesQ2.includes('insulation');
-    const priorityEasyClean = prioritiesQ2.includes('easy_clean');
-    const priorityEnergySave = prioritiesQ2.includes('energy_save');
-    const priorityRelax = prioritiesQ2.includes('relax_function');
-    const priorityDesign = prioritiesQ2.includes('design_calm');
-
-    const mustWarm = mustHaveQ8.includes('warm');
-    const mustEasyMaintenance = mustHaveQ8.includes('easy_maintenance');
-    const mustUtilitySave = mustHaveQ8.includes('utility_save');
-    const mustHealing = mustHaveQ8.includes('healing');
-    const mustAesthetic = mustHaveQ8.includes('aesthetic');
-
-    let product = 'サザナ';
-    let description = 'バランスの取れた標準的なバスルームです。';
-
-    if (concernCold){
-      if (utilityCost === 'cost_priority' || concernHeatCost){
-        product = 'セレヴィア';
-        description = '断熱性能と省エネ設計で、寒さ・ヒートショックの不安を減らし、光熱費も抑えられます。';
-      }else{
-        product = 'サザナ';
-        description = '断熱性能で浴室の寒さを和らげ、ヒートショック対策にもつながります。';
-      }
-    }
-
-    if (concernCleaning){
-      if (cleaningPreference === 'auto_clean_interest' || priorityEasyClean){
-        product = 'ラクヴィア';
-        description = '自動洗浄・除菌機能でカビや汚れのストレスを軽減。お掃除の負担を大幅に減らせます。';
-      }else if (cleaningPreference === 'easy_clean_priority'){
-        product = 'every';
-        description = 'お手入れしやすい設計で、サッと掃除が完了。キレイが続きやすいバスルームです。';
-      }
-    }
-
-    if (concernHeatCost && !concernCold){
-      product = 'セレヴィア';
-      description = '保温性と省エネ設計で、お湯が冷めにくく、光熱費も抑えやすいモデルです。';
-    }
-
-    if (concernAppearance){
-      if (utilityCost !== 'cost_priority'){
-        product = 'グランスパ';
-        description = '洗練されたデザインで空間を一新。見た目も気分も変えたい方におすすめです。';
-      }
-    }
-
-    if (concernSafety){
-      product = 'サザナ';
-      description = '滑りにくい床や手すり対応で安全性を重視。転倒リスクを軽減します。';
-    }
-
-    if (cleaningPreference === 'auto_clean_interest'){
-      product = 'ラクヴィア';
-      description = '自動洗浄機能で日々のお掃除から解放。清潔を保ちやすいバスルームです。';
-    }
-
-    if (spaceImage === 'luxury_hotel'){
-      if (utilityCost !== 'cost_priority'){
-        if (priorityRelax){
-          product = 'シンラ';
-          description = 'ファインバブルなど上質な癒し機能で、自宅をホテルライクな極上空間に。';
-        }else{
-          product = 'スパージュ';
-          description = '高級感とデザイン性を重視。毎日のバスタイムが特別な時間になります。';
-        }
-      }
-    }else if (spaceImage === 'bright_clean'){
-      if (priorityEasyClean || cleaningPreference === 'auto_clean_interest'){
-        product = 'ラクヴィア';
-        description = '明るく清潔感のある空間に、手間を減らす機能をプラス。キレイが続きます。';
-      }else if (utilityCost === 'cost_priority'){
-        product = 'セレヴィア';
-        description = '清潔感と省エネを両立。光熱費を抑えながら快適に過ごせます。';
-      }
-    }else if (spaceImage === 'natural_wood'){
-      if (utilityCost !== 'cost_priority' && !concernCleaning){
-        product = 'AXIY';
-        description = '木のぬくもりを感じる癒し空間。自然素材の雰囲気でリラックスできます。';
-      }
-    }else if (spaceImage === 'minimalist'){
-      if (priorityDesign && utilityCost !== 'cost_priority'){
-        product = 'グランスパ';
-        description = '無駄を削ぎ落としたスッキリ空間。洗練されたデザインが特徴です。';
-      }else if (utilityCost === 'cost_priority' && !concernCleaning){
-        product = 'リデア';
-        description = '必要な機能をコンパクトに。シンプルで掃除もしやすい設計です。';
-      }
-    }
-
-    if (utilityCost === 'cost_priority'){
-      if (priorityEnergySave || concernHeatCost || mustUtilitySave){
-        product = 'セレヴィア';
-        description = '省エネ性能で水道・光熱費を抑えやすいモデル。経済性重視の方におすすめです。';
-      }
-    }
-
-    if ((bathStyle === 'relax_deep' || bathStyle === 'personal_relax') && priorityRelax && utilityCost !== 'cost_priority'){
-      product = 'シンラ';
-      description = '癒し機能が充実。1日の疲れをしっかり癒したい方におすすめです。';
-    }
-
-    if (priorityInsulation && utilityCost !== 'cost_priority'){
-      product = 'サザナ';
-      description = '断熱性能に優れ、温かさが続きやすいお風呂です。';
-    }
-
-    if (mustWarm && utilityCost !== 'cost_priority'){
-      product = 'シンラ';
-      description = '高い断熱性能で温かさを逃しにくいモデル。冬でも快適です。';
-    }
-
-    if (mustEasyMaintenance){
-      product = (cleaningPreference === 'auto_clean_interest' || utilityCost !== 'cost_priority') ? 'ラクヴィア' : 'every';
-      description = (product === 'ラクヴィア')
-        ? '自動洗浄機能でお掃除の手間を大幅に削減。清潔を保ちやすいです。'
-        : 'お手入れしやすい設計で、掃除の負担を軽減。コストも抑えやすいモデルです。';
-    }
-
-    if (mustHealing && utilityCost !== 'cost_priority'){
-      product = 'シンラ';
-      description = '癒しの機能が充実。心身を整える“ご褒美バスタイム”を叶えます。';
-    }
-
-    if (mustAesthetic){
-      product = (utilityCost !== 'cost_priority') ? 'スパージュ' : 'グランスパ';
-      description = (product === 'スパージュ')
-        ? 'デザイン性と高級感を重視。見た目も気分も上がるバスルームです。'
-        : '洗練されたデザインで空間を一新。スタイリッシュに仕上げたい方へ。';
-    }
-
-    if (stylePreference === 'stone'){
-      description += ' ストーン調のアクセントで、明るく上品な雰囲気に。';
-    }else if (stylePreference === 'natural_wood_style'){
-      description += ' 木目調でやさしい温もりを感じる空間に。';
-    }else if (stylePreference === 'black_chic'){
-      description += ' ブラック系で落ち着いた大人の空間に。';
-    }
-
-    const mainImageUrl = (productImages[product] && productImages[product].main) ? productImages[product].main : '';
-    const subImageUrl  = (productImages[product] && productImages[product].sub) ? productImages[product].sub : '';
-
-    return { product, mainImage: mainImageUrl, subImage: subImageUrl, description };
+    }, 1500);
   }
 
   function restartDiagnosis(){
@@ -856,13 +822,9 @@
     selectedOptions = [];
   }
 
-  // 改行：\n を <br> に変換して表示（タイトル/ボタンなどに使える）
-  function setWithNewlines(el, text){
-    el.innerHTML = String(text || "").replace(/\n/g, "<br>");
-  }
-
-  // もし後で差し替えたい場合（ここを触ればOK）
-  setWithNewlines(document.getElementById('startButton'), "診断\nスタート");
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('startButton').textContent = "診断\nスタート";
+  });
 </script>
 </body>
 </html>
