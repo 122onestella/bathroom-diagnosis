@@ -506,33 +506,42 @@
             <div class="result-description" id="resultDescription"></div>
 
             <!-- ★ ここからCTA -->
-            <div class="cta" id="ctaBlock">
-              <h3>この結果をもとに、<br>“あなたのお家のアフター”を見てみませんか？</h3>
-              <p>
-                診断結果が「文字」だけだと、イメージが湧きにくいことも。<br>
-                今の写真（ビフォー）をもとに、あなたに合う雰囲気の“アフターイメージ”を作ることもできます。
-              </p>
-              <ul>
-                <li>あなたの診断結果を反映した <strong>アフターイメージ</strong></li>
-                <li>「水廻りを選ぶ時のポイント10選（PDF）」</li>
-              </ul>
-              <p><strong>お試しセット：300円</strong></p>
+            <button class="btn-restart" ...>...</button>
 
-              <button class="btn-line" type="button" onclick="openLine()">
-                公式LINEで<br>相談する
-              </button>
-              <button class="btn-pay" type="button" onclick="openPayment()">
-                300円セットを<br>申し込む
-              </button>
+  <h3>診断結果はいかがでしたか？😊</h3>
 
-              <div class="mini">
-                ※今の写真（ビフォー）と診断結果（スクショ）をLINEで送るだけでOKです。
-              </div>
-            </div>
+  <p>
+    この画面をスクショして、公式LINEに送ってください。<br>
+    あなたの診断結果をもとに、
+    <strong>「あなたに合った水廻り選びのポイント」</strong>を
+    無料でお伝えします✨
+  </p>
+
+  <ul>
+    <li>バスルームだけ／キッチンだけ／両方でもOKです</li>
+    <li>スクショ1枚で大丈夫です</li>
+  </ul>
+
+  <button class="btn-line" type="button" onclick="openLineWithMessage()">
+    LINEに診断結果を送る
+  </button>
+
+  <button class="btn-secondary" type="button" onclick="copyLineMessage()">
+    送信メッセージをコピー
+  </button>
+
+  <div class="mini">
+    ※LINEが開いたら、スクショを貼り付けて送ってください😊
+  </div>
+
+</div>
+             
+              
             <!-- ★ CTAここまで -->
-
-            <button class="btn-restart" type="button" onclick="restartDiagnosis()">もう一度
-診断する</button>
+　　<button class="btn-restart" type="button" onclick="goToSelect()">
+もう一度<br>診断する
+</button>
+          
           </div>
         </div>
       </section>
@@ -542,8 +551,7 @@
 
 <script>
   // ★差し替え用（URLを入れるだけ）
-  const LINE_URL = "（ここに公式LINEのURLを入れる）";
-  const PAYMENT_URL = "（ここに決済リンクのURLを入れる）";
+  const LINE_URL =  "https://page.line.me/064jdvrk";
 
   function openLine(){
     if(!LINE_URL || LINE_URL.includes("ここに")){
@@ -843,6 +851,9 @@
   document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('startButton').textContent = "診断\nスタート";
   });
+  function openLineWithMessage(){ openLine(); }
+
+async function copyLineMessage(){ ... }
 </script>
 </body>
 </html>
