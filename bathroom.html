@@ -548,76 +548,53 @@
 
     </div>
   </div>
+<script>
+  const LINE_URL = "https://page.line.me/064jdvrk";
 
-</script>
-   const LINE_URL = "https://page.line.me/064jdvrk";
-
-// LINEを開くだけ（保険用）
-function openLine(){
-  if(!LINE_URL){
-    alert("LINEのURLが未設定です");
-    return;
-  }
-  window.open(LINE_URL, "_blank");
-}
-
-// 診断結果送信用（メッセージ付き）
-function openLineWithMessage(){
-
-  const message =
-`診断結果を送ります😊
-
-① バスルーム / キッチン（どちらの診断か）
-② 診断結果のスクショ
-
-をお送りします！`;
-
-  const encoded = encodeURIComponent(message);
-  const url = `https://line.me/R/share?text=${encoded}`;
-
-  window.open(url, "_blank");
-}
-
-// メッセージコピー用（LINE開けない人用）
-async function copyLineMessage(){
-
-  const message =
-`診断結果を送ります😊
-
-① バスルーム / キッチン（どちらの診断か）
-② 診断結果のスクショ
-
-をお送りします！`;
-
-  try{
-    await navigator.clipboard.writeText(message);
-    alert("送信メッセージをコピーしました！LINEに貼り付けて送ってください😊");
-  }catch(e){
-    alert("コピーできませんでした。上の文章を手動で送ってください🙏");
-  }
-}
- 
-
-  const encoded = encodeURIComponent(message);
-  const url = `https://line.me/R/share?text=${encoded}`;
-
-  
-
-  await navigator.clipboard.writeText(message);
-  alert("送信用メッセージをコピーしました📋\nLINEに貼り付けて送ってください😊");
-}
+  // LINEを開くだけ（保険用）
+  function openLine(){
+    if(!LINE_URL){
+      alert("LINEのURLが未設定です");
       return;
     }
     window.open(LINE_URL, "_blank");
   }
 
-  function openPayment(){
-    if(!PAYMENT_URL || PAYMENT_URL.includes("ここに")){
-      alert("決済リンクのURLが未設定です。PAYMENT_URLを差し替えてね。");
-      return;
-    }
-    window.open(PAYMENT_URL, "_blank");
+  // 診断結果送信用（メッセージ付き）
+  function openLineWithMessage(){
+    const message =
+`診断結果を送ります😊
+
+① バスルーム / キッチン（どちらの診断か）
+② 診断結果のスクショ
+
+をお送りします！`;
+
+    const encoded = encodeURIComponent(message);
+    const url = `https://line.me/R/share?text=${encoded}`;
+    window.open(url, "_blank");
   }
+
+  // メッセージコピー用（LINE開けない人用）
+  async function copyLineMessage(){
+    const message =
+`診断結果を送ります😊
+
+① バスルーム / キッチン（どちらの診断か）
+② 診断結果のスクショ
+
+をお送りします！`;
+
+    try{
+      await navigator.clipboard.writeText(message);
+      alert("送信メッセージをコピーしました📋\nLINEに貼り付けて送ってください😊");
+    }catch(e){
+      alert("コピーできませんでした。上の文章を手動で送ってください🙏");
+    }
+  }
+
+  // ここから下に、診断のJS（questions, startDiagnosisなど）を続ける
+
 
   const questions = [
     {
