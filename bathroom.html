@@ -99,6 +99,22 @@
       width: min(92%, 900px);
       border: 1px solid rgba(230,237,245,.8);
     }
+/* ===== CTA（診断後ブロック）文字を大きく ===== */
+.cta h3{
+  font-size: clamp(22px, 4.4vw, 52px);
+}
+.cta p, .cta ul, .cta li{
+  font-size: clamp(16px, 3.6vw, 40px);
+  line-height: 1.6;
+}
+.cta .mini{
+  font-size: clamp(14px, 3.0vw, 34px);
+}
+
+/* 「送信メッセージをコピー」のボタン文字が小さく見えやすいので底上げ */
+#ctaBlock .btn-secondary{
+  font-size: clamp(18px, 3.6vw, 44px);
+}
 
     .subtitle{
       font-size: var(--fs-subtitle);
@@ -506,8 +522,7 @@
             <div class="result-description" id="resultDescription"></div>
 
             <!-- ★ ここからCTA -->
-            <button class="btn-restart" ...>...</button>
-
+           
   <h3>診断結果はいかがでしたか？😊</h3>
 
   <p>
@@ -879,6 +894,11 @@
     const btn = document.getElementById('startButton');
     if(btn) btn.textContent = "診断\nスタート";
   });
+    // 「もう一度診断する」＝ 表紙(select.html)に戻す
+function restartDiagnosis(){
+  window.location.href = "select.html";
+}
+
 </script>   
 </body>
 </html>
