@@ -460,6 +460,41 @@
       display:block;
     }
     .btn-restart:hover{ transform: translateY(-2px); box-shadow: 0 14px 32px rgba(169,215,230,.28); }
+    /* ===== 診断結果CTAの文字を大きく（確実に効かせる） ===== */
+#ctaBlock h3{
+  font-size: clamp(22px, 4.4vw, 52px) !important;
+  line-height: 1.25 !important;
+}
+#ctaBlock p,
+#ctaBlock ul,
+#ctaBlock li{
+  font-size: clamp(16px, 3.6vw, 40px) !important;
+  line-height: 1.7 !important;
+}
+#ctaBlock .mini{
+  font-size: clamp(14px, 3.0vw, 34px) !important;
+  line-height: 1.5 !important;
+}
+
+/* ===== ボタンの文字を“上下左右のど真ん中”に固定 ===== */
+.btn, .btn-line, .btn-secondary, .btn-restart{
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  line-height: 1.15 !important;
+  padding-top: 18px !important;
+  padding-bottom: 18px !important;
+}
+
+/* 2行ボタンがあるなら改行も安定 */
+.btn-line, .btn-restart{
+  white-space: pre-line !important;
+}
+function restartDiagnosis(){
+  window.location.href = "select.html";
+}
+
   </style>
 </head>
 
