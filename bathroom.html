@@ -551,7 +551,9 @@
 
 <script>
   // ★差し替え用（URLを入れるだけ）
-  const LINE_URL = "https://page.line.me/064jdvrk";
+ 
+を
+ const LINE_URL = "https://page.line.me/064jdvrk";
 
 // LINEを開くだけ（保険用）
 function openLine(){
@@ -589,6 +591,20 @@ async function copyLineMessage(){
 ② 診断結果のスクショ
 
 をお送りします！`;
+
+  try{
+    await navigator.clipboard.writeText(message);
+    alert("送信メッセージをコピーしました！LINEに貼り付けて送ってください😊");
+  }catch(e){
+    alert("コピーできませんでした。上の文章を手動で送ってください🙏");
+  }
+}
+ 
+
+  const encoded = encodeURIComponent(message);
+  const url = `https://line.me/R/share?text=${encoded}`;
+
+  
 
   await navigator.clipboard.writeText(message);
   alert("送信用メッセージをコピーしました📋\nLINEに貼り付けて送ってください😊");
