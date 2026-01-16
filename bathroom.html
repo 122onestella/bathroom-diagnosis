@@ -548,10 +548,13 @@
 
     </div>
   </div>
-<script>
+  <script>
+  /* =========================
+     LINE 送信用（共通）
+  ========================= */
   const LINE_URL = "https://page.line.me/064jdvrk";
 
-  // LINEを開くだけ（保険用）
+  // 公式LINEを開くだけ（保険用）
   function openLine(){
     if(!LINE_URL){
       alert("LINEのURLが未設定です");
@@ -593,8 +596,9 @@
     }
   }
 
-  // ここから下に、診断のJS（questions, startDiagnosisなど）を続ける
-
+  /* =========================
+     診断ロジック（ここから下）
+  ========================= */
 
   const questions = [
     {
@@ -832,17 +836,17 @@
     }, {});
 
     let resultProduct = 'サザナ';
-    let resultDesc = 'お客様の回答から、**サザナ**が最も適していると診断されました。サザナは、ほっカラリ床や魔法びん浴槽など、快適とエコを両立した機能が充実しており、多くの方におすすめできるモデルです。';
+    let resultDesc = 'お客様の回答から、**サザナ**が最も適していると診断されました。サザナは、快適とエコを両立した機能が充実しており、多くの方におすすめできるモデルです。';
 
     if (counts['relax_deep'] || counts['personal_relax'] || counts['luxury_hotel']){
       resultProduct = 'シンラ';
-      resultDesc = 'お客様は、お風呂での**リラックスタイム**を特に重視されているようです。**シンラ**は、肩楽湯や打たせ湯など、極上のリラックス機能と上質なデザインを兼ね備えた、最高級のバスルームです。';
+      resultDesc = 'お客様は、お風呂での**リラックスタイム**を特に重視されているようです。**シンラ**は、上質なデザインとリラックス機能を兼ね備えた最高級モデルです。';
     } else if (counts['easy_clean'] || counts['easy_clean_priority'] || counts['auto_clean_interest']){
       resultProduct = 'リデア';
-      resultDesc = 'お客様は、**お手入れのしやすさ**を重視されているようです。**リデア**は、まる洗いカウンターやくるりんポイ排水口など、日々の掃除を劇的にラクにする機能が満載のモデルです。';
+      resultDesc = 'お客様は、**お手入れのしやすさ**を重視されているようです。**リデア**は、日々の掃除をラクにする機能が充実したモデルです。';
     } else if (counts['warm'] || counts['insulation'] || counts['heat_cost']){
       resultProduct = 'スパージュ';
-      resultDesc = 'お客様は、**温かさ**と**省エネ**を重視されているようです。**スパージュ**は、高い断熱性能と、お湯が冷めにくい構造で、冬でも快適なバスタイムを実現します。';
+      resultDesc = 'お客様は、**温かさ**と**快適性**を重視されているようです。**スパージュ**は、高い断熱性能で冬でも快適なバスタイムを実現します。';
     }
 
     setTimeout(() => {
@@ -855,32 +859,26 @@
       const mainImg = document.getElementById('resultImageMain');
       const subImg = document.getElementById('resultImageSub');
 
-      mainImg.src = images.main;
+      mainImg.src = images.main || '';
       mainImg.style.display = images.main ? 'block' : 'none';
       mainImg.alt = `${resultProduct} (メイン)`;
 
-      subImg.src = images.sub;
+      subImg.src = images.sub || '';
       subImg.style.display = images.sub ? 'block' : 'none';
       subImg.alt = `${resultProduct} (サブ)`;
-
     }, 1500);
   }
 
+  // ★「もう一度診断する」＝ 表紙（select.html）へ
   function restartDiagnosis(){
-    document.getElementById('resultScreen').style.display = 'none';
-    document.getElementById('startScreen').style.display = 'block';
-    currentQuestion = 0;
-    answers = {};
-    selectedOption = null;
-    selectedOptions = [];
+    window.location.href = "select.html";
   }
 
+  // “診断スタート”改行を安定化
   document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('startButton').textContent = "診断\nスタート";
+    const btn = document.getElementById('startButton');
+    if(btn) btn.textContent = "診断\nスタート";
   });
-  function openLineWithMessage(){ openLine(); }
-
-async function copyLineMessage(){ ... }
-</script>
+</script>   
 </body>
 </html>
