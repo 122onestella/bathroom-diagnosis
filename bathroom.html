@@ -6,36 +6,27 @@
   <title>バスルーム・セルフ診断</title>
   <style>
     :root{
-      --fs-title: clamp(40px, 7.2vw, 92px);
-      --fs-subtitle: clamp(18px, 3.2vw, 44px);
+      /* フォントサイズ設定 */
+      --fs-title: clamp(32px, 6.5vw, 80px);
+      --fs-subtitle: clamp(16px, 3vw, 36px);
       --fs-start-desc: clamp(18px, 3.2vw, 40px);
-      --fs-btn: clamp(22px, 4.2vw, 56px);
-
+      --fs-btn: clamp(20px, 4vw, 52px);
       --fs-q: clamp(22px, 4.4vw, 62px);
       --fs-opt: clamp(18px, 3.6vw, 48px);
       --fs-chip: clamp(14px, 2.8vw, 34px);
-
       --fs-result-title: clamp(22px, 4.2vw, 54px);
       --fs-result-product: clamp(26px, 5.0vw, 68px);
       --fs-result-desc: clamp(18px, 3.6vw, 46px);
 
-      /* ===== Color System (Muted / Elegant) ===== */
-      --bg1: #EAF4FB;      /* background: soft blue */
-      --bg2: #F7EAF3;      /* background: soft pink */
-      --paper: #EEF6FB;    /* panels: soft blue-gray */
-      --paper2:#FFFFFF;    /* cards */
-
-      --ink: #2F3A40;      /* primary text */
-      --ink-soft:#60727C;  /* secondary text */
-
-      --accent:#BEE7E8;    /* main accent */
-      --accent2:#A9D7E6;   /* accent 2 */
-      --accent-strong:#0C56A3; /* for result headings */
-
-      --card:#FFFFFF;
-      --line:#E6EDF5;
-      --shadow: 0 18px 50px rgba(0,0,0,.14);
-      --shadow2: 0 10px 26px rgba(0,0,0,.10);
+      /* カラーシステム（清潔感・シンプル・統一感） */
+      --bg-main: #F8FBFE;      /* 全体の背景：ごく薄い水色 */
+      --accent-blue: #005BAC;  /* メインのアクセント：信頼感のある青 */
+      --accent-soft: #E1F0F8;  /* サブのアクセント：優しい水色 */
+      --ink-main: #2C3338;     /* メイン文字：濃いグレー */
+      --ink-sub: #5F6C75;      /* サブ文字：中間のグレー */
+      --white: #FFFFFF;
+      --line-color: #E1E8ED;
+      --shadow: 0 12px 40px rgba(0,0,0,0.08);
       --radius: 24px;
     }
 
@@ -45,12 +36,10 @@
     body{
       margin:0; padding:0;
       font-family: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(900px 600px at 25% 15%, rgba(255,255,255,.65), transparent 60%),
-        radial-gradient(1000px 700px at 85% 25%, rgba(255,255,255,.55), transparent 62%),
-        linear-gradient(135deg, var(--bg1) 0%, #f3fbff 35%, #fff8fd 60%, var(--bg2) 100%);
-      color: var(--ink);
+      background-color: var(--bg-main);
+      color: var(--ink-main);
       overflow-x:hidden;
+      line-height: 1.6;
     }
 
     .app-container{
@@ -59,786 +48,475 @@
       display:flex;
       flex-direction:column;
       align-items:center;
-      padding: 18px;
+      padding: 20px;
     }
 
     .content-wrapper{
       width:100%;
-      max-width:1080px;
-      background: rgba(255,255,255,.72);
-      border: 1px solid rgba(230,237,245,.85);
+      max-width:800px;
+      background: var(--white);
+      border: 1px solid var(--line-color);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 28px 18px 34px;
-      margin: 14px 0;
-      backdrop-filter: blur(6px);
+      padding: 40px 24px;
+      margin: 20px 0;
     }
 
     .header{
       text-align:center;
-      margin-bottom: 18px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap: 10px;
+      margin-bottom: 32px;
     }
 
     .title{
       font-size: var(--fs-title);
       font-weight: 900;
-      line-height: 1.08;
-      color: var(--ink);
-      padding: 22px 34px;
-      border-radius: 22px;
-      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(238,246,251,.95));
-      box-shadow: var(--shadow2);
-      text-shadow: 0 2px 0 rgba(255,255,255,.85);
-      display:inline-block;
-      letter-spacing: .02em;
-      text-align:center;
-      width: min(92%, 900px);
-      border: 1px solid rgba(230,237,245,.8);
+      line-height: 1.3;
+      color: var(--accent-blue);
+      margin: 0 0 12px;
+      white-space: pre-line;
     }
 
     .subtitle{
       font-size: var(--fs-subtitle);
-      color: var(--ink-soft);
+      color: var(--ink-sub);
       margin: 0;
-      opacity: .95;
-      line-height: 1.35;
-      text-align:center;
-      width: min(92%, 900px);
     }
 
-    #resultScreen .header .subtitle{ display:none; }
-
-    .start-screen{
-      text-align:center;
-      padding: 10px 10px 4px;
-      background: linear-gradient(180deg, rgba(238,246,251,.95), rgba(238,246,251,.78));
-      border: 1px solid rgba(230,237,245,.95);
-      border-radius: 22px;
-      box-shadow: 0 10px 24px rgba(0,0,0,.08);
-    }
-
-    #questionScreen{
-      background: linear-gradient(180deg, rgba(238,246,251,.95), rgba(238,246,251,.78));
-      border: 1px solid rgba(230,237,245,.95);
-      border-radius: 22px;
-      box-shadow: 0 10px 24px rgba(0,0,0,.08);
-      padding: 10px 10px 4px;
-    }
-
-    .start-icon{
-      font-size: clamp(56px, 8vw, 96px);
-      margin: 14px 0 12px;
-      animation: floaty 2.3s ease-in-out infinite;
-    }
-
-    @keyframes floaty{
-      0%,100%{ transform: translateY(0); }
-      50%{ transform: translateY(-10px); }
-    }
-
-    .start-description{
-      font-size: var(--fs-start-desc);
-      color: var(--ink-soft);
-      margin: 0 0 18px;
-      line-height: 1.55;
-      padding: 0 10px;
-    }
-
-    /* Main button (Start / Next) */
-    .btn{
-      background: linear-gradient(135deg, rgba(190,231,232,.98) 0%, rgba(169,215,230,.98) 100%);
-      color: var(--ink);
-      border: 1px solid rgba(169,215,230,.55);
-      padding: 18px 28px;
-      font-size: var(--fs-btn);
-      font-weight: 900;
-      border-radius: 18px;
-      cursor:pointer;
-      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
-      box-shadow: 0 10px 26px rgba(169,215,230,.22);
-      width: 100%;
-      max-width: 520px;
-      white-space: pre-line;
-      line-height: 1.15;
-      letter-spacing: .02em;
-      margin: 0 auto 14px;
+    /* ボタン共通スタイル */
+    .btn-base {
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-radius: 16px;
+      font-weight: 900;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      white-space: pre-line;
+      line-height: 1.3;
+      text-decoration: none;
     }
-    .btn:hover{
-      transform: translateY(-2px);
-      filter: brightness(1.02);
-      box-shadow: 0 14px 32px rgba(169,215,230,.28);
-    }
-    .btn:active{ transform: translateY(0); }
-    .btn:disabled{ opacity:.55; cursor:not-allowed; }
+    .btn-base:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .btn-base:active { transform: translateY(0); }
 
+    /* 診断スタートボタン */
+    .btn-main {
+      background-color: var(--accent-blue);
+      color: var(--white);
+      border: none;
+      padding: 20px 30px;
+      font-size: var(--fs-btn);
+      box-shadow: 0 8px 20px rgba(0,91,172,0.2);
+    }
+
+    /* LINEボタン */
+    .btn-line {
+      background-color: #06C755;
+      color: var(--white);
+      border: none;
+      padding: 20px 30px;
+      font-size: var(--fs-btn);
+      margin-bottom: 16px;
+      box-shadow: 0 8px 20px rgba(6,199,85,0.2);
+    }
+
+    /* 二次ボタン（コピー、戻るなど） */
+    .btn-sub {
+      background-color: var(--white);
+      color: var(--ink-sub);
+      border: 2px solid var(--line-color);
+      padding: 16px 24px;
+      font-size: clamp(16px, 3.5vw, 32px);
+    }
+    .btn-sub:hover { background-color: var(--bg-main); }
+
+    /* もう一度診断するボタン */
+    .btn-restart {
+      background-color: var(--accent-soft);
+      color: var(--accent-blue);
+      border: 1px solid var(--accent-blue);
+      padding: 18px 30px;
+      font-size: var(--fs-btn);
+      margin-top: 32px;
+    }
+
+    /* 進行状況バー */
     .progress-bar{
       width:100%;
-      height: 12px;
-      background: rgba(230,237,245,.95);
+      height: 8px;
+      background: var(--line-color);
       border-radius: 999px;
       overflow:hidden;
-      margin: 6px 0 18px;
-      border: 1px solid rgba(230,237,245,.95);
+      margin-bottom: 32px;
     }
     .progress-fill{
       height: 100%;
-      background: linear-gradient(90deg, rgba(190,231,232,.98) 0%, rgba(169,215,230,.98) 100%);
+      background: var(--accent-blue);
       transition: width .35s ease;
-      border-radius: 999px;
     }
 
-    .question-container{ margin-bottom: 12px; }
-
-    .question-number{
-      display:inline-block;
-      background: linear-gradient(135deg, rgba(190,231,232,.85) 0%, rgba(169,215,230,.85) 100%);
-      color: var(--ink);
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-size: var(--fs-chip);
-      font-weight: 900;
-      margin-bottom: 12px;
-      letter-spacing: .03em;
-      border: 1px solid rgba(169,215,230,.55);
-    }
-
+    /* 質問・選択肢 */
     .question-text{
       font-size: var(--fs-q);
       font-weight: 900;
-      color: var(--ink);
-      margin: 0 0 18px;
-      line-height: 1.25;
-      letter-spacing: .01em;
+      margin-bottom: 24px;
+      color: var(--ink-main);
     }
-
     .options-grid{
       display:flex;
       flex-direction:column;
-      gap: 14px;
-      margin-bottom: 10px;
+      gap: 16px;
     }
-
     .option-card{
-      background: rgba(255,255,255,.94);
-      border: 2px solid rgba(230,237,245,.98);
-      border-radius: 18px;
-      padding: 18px 14px;
-      cursor:pointer;
-      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
-      text-align:center;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      min-height: 110px;
-      box-shadow: 0 6px 16px rgba(0,0,0,.06);
-    }
-    .option-card:hover{
-      transform: translateY(-3px);
-      border-color: rgba(169,215,230,.75);
-      box-shadow: 0 10px 22px rgba(0,0,0,.10);
-    }
-    .option-card.selected{
-      border-color: rgba(169,215,230,.95);
-      background: linear-gradient(135deg, rgba(190,231,232,.22) 0%, rgba(169,215,230,.18) 100%);
-      box-shadow: 0 10px 22px rgba(169,215,230,.16);
-    }
-
-    .option-icon{ font-size: clamp(34px, 6vw, 64px); margin-bottom: 8px; }
-    .option-text{
-      font-size: var(--fs-opt);
-      font-weight: 800;
-      color: var(--ink);
-      line-height: 1.2;
-      white-space: pre-line;
-      text-align:center;
-    }
-
-    .navigation-buttons{
-      display:flex;
-      justify-content:space-between;
-      gap: 12px;
-      margin-top: 16px;
-      align-items:stretch;
-    }
-
-    .btn-secondary{
-      background: rgba(255,255,255,.92);
-      color: var(--ink-soft);
-      padding: 16px 16px;
-      border: 2px solid rgba(230,237,245,.98);
+      background: var(--white);
+      border: 2px solid var(--line-color);
       border-radius: 16px;
-      font-size: var(--fs-btn);
-      font-weight: 900;
+      padding: 20px;
       cursor:pointer;
-      transition: filter .2s ease, transform .2s ease;
-      flex:1;
-      white-space: nowrap;
-      box-shadow: 0 10px 22px rgba(0,0,0,.05);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-    .btn-secondary:hover{ filter: brightness(.99); transform: translateY(-1px); }
-    .btn-secondary:disabled{ opacity:.55; cursor:not-allowed; transform:none; }
-
-    /* ===== Result ===== */
-    .result-container{ text-align:center; }
-    .result-icon{ font-size: clamp(56px, 8vw, 96px); margin-bottom: 14px; animation: pop .6s ease; }
-    @keyframes pop{ 0%{transform:scale(0)} 70%{transform:scale(1.08)} 100%{transform:scale(1)} }
-
-    .result-title{
-      font-size: var(--fs-result-title);
-      font-weight: 900;
-      margin: 0 0 14px;
-      color: var(--accent-strong);
-      letter-spacing: .02em;
-    }
-
-    .result-loading{
-      font-size: clamp(18px, 3.8vw, 44px);
-      font-weight: 900;
-      color: rgba(12, 86, 163, .95);
-      margin: 34px 0;
-      animation: pulse 1.4s ease-in-out infinite;
-    }
-    @keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.5} }
-
-    .result-product{
-      font-size: var(--fs-result-product);
-      font-weight: 950;
-      color: #0c56a3;
-      -webkit-text-stroke: 2px rgba(255,255,255,.95);
-      text-shadow:
-        0 2px 0 rgba(255,255,255,.85),
-        0 8px 20px rgba(0,0,0,.10);
-      margin: 0 0 14px;
-      opacity:0;
-      animation: fadeUp .6s ease forwards;
-    }
-    @keyframes fadeUp{ from{opacity:0; transform: translateY(18px)} to{opacity:1; transform:none} }
-
-    .result-images{
+      transition: all 0.2s ease;
       display:flex;
-      flex-direction:column;
-      gap: 14px;
       align-items:center;
-      opacity:0;
-      animation: fadeUp .6s ease .2s forwards;
-      margin-bottom: 18px;
+      gap: 16px;
     }
-    .image-wrapper{
-      width: 100%;
-      max-width: 600px;
-      border-radius: 18px;
-      overflow:hidden;
-      box-shadow: var(--shadow2);
-      border: 1px solid rgba(230,237,245,.8);
-    }
-    .result-image{ width:100%; height:auto; display:block; }
+    .option-card:hover{ border-color: var(--accent-blue); background: var(--bg-main); }
+    .option-card.selected{ border-color: var(--accent-blue); background: var(--accent-soft); }
+    .option-icon{ font-size: 32px; }
+    .option-text{ font-size: var(--fs-opt); font-weight: 700; white-space: pre-line; }
 
-    .result-description{
+    /* 診断結果 */
+    .result-container { text-align: center; }
+    .result-product {
+      font-size: var(--fs-result-product);
+      font-weight: 900;
+      color: var(--accent-blue);
+      margin-bottom: 20px;
+    }
+    .result-description {
+      text-align: left;
       font-size: var(--fs-result-desc);
-      line-height: 1.6;
-      color: var(--ink);
-      background: rgba(255,255,255,.85);
+      background: var(--bg-main);
       padding: 24px;
-      border-radius: 18px;
-      border: 1px solid rgba(230,237,245,.9);
-      margin-bottom: 24px;
-      text-align:left;
-      opacity:0;
-      animation: fadeUp .6s ease .4s forwards;
+      border-radius: 16px;
+      margin-bottom: 32px;
     }
-    .result-description strong{ color: var(--accent-strong); font-weight: 900; }
+    .result-description strong { color: var(--accent-blue); }
 
-    /* ===== CTA Block Styles ===== */
+    /* CTAブロック */
     .cta-block {
+      border-top: 2px dashed var(--line-color);
+      padding-top: 32px;
       margin-top: 32px;
-      padding: 24px;
-      background: rgba(255,255,255,0.9);
-      border-radius: 20px;
-      border: 1px solid var(--line);
-      text-align: center;
     }
     .cta-block h3 {
-      font-size: clamp(24px, 4.8vw, 56px);
-      margin-bottom: 16px;
-      color: var(--ink);
+      font-size: clamp(22px, 4.5vw, 48px);
+      margin-bottom: 20px;
     }
     .cta-block p {
-      font-size: clamp(18px, 3.8vw, 42px);
-      line-height: 1.6;
-      margin-bottom: 16px;
-      color: var(--ink-soft);
+      font-size: clamp(18px, 3.8vw, 40px);
+      margin-bottom: 20px;
+      white-space: pre-line;
     }
     .cta-block ul {
       text-align: left;
       display: inline-block;
-      margin-bottom: 20px;
-      padding-left: 24px;
+      margin-bottom: 24px;
+      padding-left: 20px;
     }
     .cta-block li {
-      font-size: clamp(16px, 3.4vw, 38px);
-      line-height: 1.5;
+      font-size: clamp(16px, 3.4vw, 36px);
       margin-bottom: 8px;
-      color: var(--ink-soft);
+      color: var(--ink-sub);
     }
-    .cta-block .mini {
-      font-size: clamp(14px, 3vw, 32px);
-      color: var(--ink-soft);
+    .mini {
+      font-size: 14px;
+      color: var(--ink-sub);
       margin-top: 12px;
-      opacity: 0.8;
     }
 
-    /* Keep LINE button green for recognizability */
-    .btn-line{
-      background: linear-gradient(135deg, rgba(8,191,84,.95) 0%, rgba(8,191,84,.78) 100%);
-      color: #fff;
-      border: none;
-      padding: 18px 20px;
-      border-radius: 16px;
-      font-size: var(--fs-btn);
-      font-weight: 900;
-      cursor:pointer;
-      width:100%;
-      max-width: 520px;
-      white-space: pre-line;
-      box-shadow: 0 10px 26px rgba(8,191,84,.18);
-      margin: 0 auto 12px;
+    .navigation-buttons {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      line-height: 1.2;
+      gap: 12px;
+      margin-top: 32px;
     }
-    .btn-line:hover{ filter: brightness(1.02); transform: translateY(-2px); }
 
-    /* Restart button: match the main system */
-    .btn-restart{
-      background: linear-gradient(135deg, rgba(190,231,232,.98) 0%, rgba(169,215,230,.98) 100%);
-      color: var(--ink);
-      padding: 18px 20px;
-      border: 1px solid rgba(169,215,230,.55);
-      border-radius: 16px;
-      font-size: var(--fs-btn);
-      font-weight: 900;
-      cursor:pointer;
-      transition: transform .2s ease, box-shadow .2s ease;
-      box-shadow: 0 10px 26px rgba(169,215,230,.22);
-      width:100%;
-      max-width: 520px;
-      margin: 24px auto 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      line-height: 1.2;
-      white-space: pre-line;
-    }
-    .btn-restart:hover{ transform: translateY(-2px); box-shadow: 0 14px 32px rgba(169,215,230,.28); }
-
-    /* Specific fix for secondary button in CTA */
-    .cta-block .btn-secondary {
-      width: 100%;
-      max-width: 520px;
-      margin: 0 auto 12px;
-      padding: 18px 20px;
-      font-size: clamp(18px, 3.6vw, 44px);
-    }
+    .hidden { display: none !important; }
 
   </style>
 </head>
-
 <body>
+
   <div class="app-container">
     <div class="content-wrapper">
+      
+      <!-- ヘッダー -->
       <header class="header">
-        <h1 class="title" id="mainTitle">バスルーム・セルフ診断</h1>
+        <h1 class="title" id="mainTitle">バスルーム
+セルフ診断</h1>
         <p class="subtitle">あなたにぴったりの1台を見つけましょう</p>
       </header>
 
-      <section id="startScreen" class="start-screen">
-        <div class="start-icon">🛁</div>
-        <p class="start-description">
-          簡単な質問に答えるだけで、<br>
-          理想のバスルームをご提案します。
+      <!-- スタート画面 -->
+      <section id="startScreen">
+        <div style="font-size: 80px; text-align: center; margin-bottom: 20px;">🛁</div>
+        <p style="text-align: center; font-size: var(--fs-start-desc); margin-bottom: 32px;">
+          簡単な質問に答えるだけで、<br>理想のバスルームをご提案します。
         </p>
-        <button class="btn" id="startButton" onclick="startDiagnosis()">診断スタート</button>
+        <button class="btn-base btn-main" onclick="startDiagnosis()">診断スタート</button>
       </section>
 
-      <section id="questionScreen" style="display:none;">
+      <!-- 質問画面 -->
+      <section id="questionScreen" class="hidden">
         <div class="progress-bar">
           <div id="progressFill" class="progress-fill" style="width:0%"></div>
         </div>
         <div class="question-container">
-          <span id="questionNumber" class="question-number">質問 1/8</span>
-          <h2 id="questionText" class="question-text">質問内容がここに入ります</h2>
-          <div id="optionsContainer" class="options-grid">
-            <!-- Options will be injected here -->
-          </div>
+          <div id="questionNumber" style="font-size: var(--fs-chip); color: var(--accent-blue); font-weight: 900; margin-bottom: 8px;">質問 1/8</div>
+          <h2 id="questionText" class="question-text">質問内容</h2>
+          <div id="optionsContainer" class="options-grid"></div>
         </div>
-        <nav class="navigation-buttons">
-          <button id="backButton" class="btn-secondary" onclick="goBack()" disabled>戻る</button>
-          <button id="nextButton" class="btn-secondary" onclick="goNext()" disabled>次へ</button>
-        </nav>
+        <div class="navigation-buttons">
+          <button id="backButton" class="btn-base btn-sub" onclick="goBack()" disabled>戻る</button>
+          <button id="nextButton" class="btn-base btn-sub" onclick="goNext()" disabled>次へ</button>
+        </div>
       </section>
 
-      <section id="resultScreen" style="display:none;">
+      <!-- 結果画面 -->
+      <section id="resultScreen" class="hidden">
         <div class="result-container">
-          <div class="result-icon">🎉</div>
-          <h2 class="result-title">診断結果</h2>
+          <h2 class="result-title" style="font-size: var(--fs-result-title); margin-bottom: 8px;">診断結果</h2>
+          <div id="resultLoading" style="padding: 40px; font-weight: 900; color: var(--accent-blue);">分析中...</div>
 
-          <div id="resultLoading" class="result-loading">あなたの診断結果は・・・？</div>
-
-          <div id="resultContent" style="display:none;">
+          <div id="resultContent" class="hidden">
             <div class="result-product" id="resultProduct"></div>
+            <div id="resultDescription" class="result-description"></div>
 
-            <div class="result-images">
-              <div class="image-wrapper">
-                <img id="resultImageMain" class="result-image" alt="おすすめ製品（メイン）"
-                     onerror="this.src=''; this.alt='画像を読み込めませんでした'; this.style.display='none';" />
-              </div>
-              <div class="image-wrapper">
-                <img id="resultImageSub" class="result-image" alt="おすすめ製品（サブ）"
-                     onerror="this.src=''; this.alt='画像を読み込めませんでした'; this.style.display='none';" />
-              </div>
-            </div>
-
-            <div class="result-description" id="resultDescription"></div>
-
-            <!-- CTA Block -->
+            <!-- CTAエリア -->
             <div class="cta-block">
               <h3>診断結果はいかがでしたか？😊</h3>
-              <p>
-                この画面をスクショして、公式LINEに送ってください。<br>
-                あなたの診断結果をもとに、
-                <strong>「あなたに合った水廻り選びのポイント」</strong>を
-                無料でお伝えします✨
-              </p>
+              <p>この画面をスクショして、
+公式LINEに送ってください。</p>
+              <p>あなたの診断結果をもとに、
+「あなた向けの水廻り選びポイント」を 
+無料でお伝えします✨</p>
               <ul>
                 <li>バスルームだけ／キッチンだけ／両方でもOKです</li>
                 <li>スクショ1枚で大丈夫です</li>
               </ul>
 
-              <button class="btn-line" type="button" onclick="openLineWithMessage()">
-                LINEに診断結果を送る
-              </button>
-
-              <button class="btn-secondary" type="button" onclick="copyLineMessage()">
-                送信メッセージをコピー
-              </button>
-
-              <div class="mini">
-                ※LINEが開いたら、スクショを貼り付けて送ってください😊
-              </div>
+              <button class="btn-base btn-line" onclick="openLineWithMessage()">LINEに
+診断結果を
+送る</button>
+              
+              <button class="btn-base btn-sub" onclick="copyLineMessage()">送信メッセージをコピー</button>
+              
+              <div class="mini">※LINEが開いたら、スクショを貼り付けて送ってください😊</div>
             </div>
-            
-            <button class="btn-restart" type="button" onclick="restartDiagnosis()">
-              もう一度診断する
-            </button>
+
+            <button class="btn-base btn-restart" onclick="restartDiagnosis()">もう一度
+診断する</button>
           </div>
         </div>
       </section>
+
     </div>
   </div>
 
   <script>
-  const questions = [
-    {
-      id: 1,
-      text: "現在のお風呂で一番「不満」に感じていることは何ですか？【1つ】",
-      options: [
-        { icon: "❄️", text: "冬場が寒くて\nつらい", value: "cold" },
-        { icon: "🧼", text: "掃除が大変、\nカビが気になる", value: "cleaning" },
-        { icon: "🏚️", text: "設備が古くて\n使いにくい", value: "old" },
-        { icon: "🛁", text: "浴槽が狭くて\nリラックスできない", value: "narrow" }
-      ]
-    },
-    {
-      id: 2,
-      text: "お風呂に入るとき、何を一番大切にしたいですか？【1つ】",
-      options: [
-        { icon: "🧘", text: "一日の疲れを癒す\nリラックスタイム", value: "relax_deep" },
-        { icon: "⚡", text: "サッと済ませて\n効率よく動きたい", value: "efficiency" },
-        { icon: "👨‍👩‍👧‍👦", text: "家族との\nコミュニケーション", value: "family" },
-        { icon: "🚿", text: "自分だけの\nこだわり空間", value: "personal_relax" }
-      ]
-    },
-    {
-      id: 3,
-      text: "お掃除を「ラク」にする機能、どれくらい興味がありますか？【1つ】",
-      options: [
-        { icon: "✨", text: "絶対に欲しい！\n自動洗浄なども検討", value: "auto_clean_interest" },
-        { icon: "🧹", text: "ある程度ラクに\nなれば嬉しい", value: "easy_clean_priority" },
-        { icon: "💪", text: "自分でしっかり\n掃除したい", value: "manual_clean" }
-      ]
-    },
-    {
-      id: 4,
-      text: "お風呂の「温かさ（断熱）」について、どう思いますか？【1つ】",
-      options: [
-        { icon: "🔥", text: "とにかく温かさ重視！\n冷めにくい浴槽も必須", value: "insulation" },
-        { icon: "🌡️", text: "標準的な温かさが\nあれば十分", value: "standard_warm" },
-        { icon: "💸", text: "温かさより\nコストを抑えたい", value: "heat_cost" }
-      ]
-    },
-    {
-      id: 5,
-      text: "節水や節電などの「エコ機能」は重視しますか？【1つ】",
-      options: [
-        { icon: "💰", text: "毎月のランニングコストは\nできるだけ抑えたい", value: "cost_priority" },
-        { icon: "⚖️", text: "気になるが\n快適さを優先したい", value: "comfort_priority" },
-        { icon: "🌟", text: "あまり意識していない", value: "not_concerned" }
-      ]
-    },
-    {
-      id: 6,
-      text: "お風呂の「空間」で一番近いイメージはどれですか？【1つ】",
-      options: [
-        { icon: "🏨", text: "ホテルライクで\n高級感のある空間", value: "luxury_hotel" },
-        { icon: "✨", text: "明るく清潔感の\nある空間", value: "bright_clean" },
-        { icon: "🌳", text: "木のぬくもりを\n感じる空間", value: "natural_wood" },
-        { icon: "🎯", text: "鏡やカウンターを減らした\nスッキリ空間", value: "minimalist" }
-      ]
-    },
-    {
-      id: 7,
-      text: "直感で「好き」なお風呂のイメージを【1つ】選んでください",
-      options: [
-        { icon: "💎", text: "明るく上品な\nストーン調", value: "stone" },
-        { icon: "🌲", text: "木のぬくもり\nナチュラルウッド調", value: "natural_wood_style" },
-        { icon: "🖤", text: "落ち着いた\nブラックシック調", value: "black_chic" }
-      ]
-    },
-    {
-      id: 8,
-      text: "新しいお風呂にこれだけは譲れない、と思うものを【2つまで】選んでください",
-      maxSelections: 2,
-      options: [
-        { icon: "🔥", text: "寒さから\n解放されたい", value: "warm" },
-        { icon: "✨", text: "掃除から\n解放されたい", value: "easy_maintenance" },
-        { icon: "💰", text: "水道・光熱費を\n抑えたい", value: "utility_save" },
-        { icon: "🧘", text: "癒しの空間に\n変えたい", value: "healing" },
-        { icon: "🎨", text: "見た目を\n新しくしたい", value: "aesthetic" },
-        { icon: "💭", text: "なんとなく\n気になっている", value: "curious" }
-      ]
+    const questions = [
+      {
+        id: 1,
+        text: "現在のお風呂で一番「不満」に感じていることは何ですか？",
+        options: [
+          { icon: "❄️", text: "冬場が寒くて\nつらい", value: "cold" },
+          { icon: "🧼", text: "掃除が大変、\nカビが気になる", value: "cleaning" },
+          { icon: "🏚️", text: "設備が古くて\n使いにくい", value: "old" },
+          { icon: "🛁", text: "浴槽が狭くて\nリラックスできない", value: "narrow" }
+        ]
+      },
+      {
+        id: 2,
+        text: "お風呂に入るとき、何を一番大切にしたいですか？",
+        options: [
+          { icon: "🧘", text: "一日の疲れを癒す\nリラックスタイム", value: "relax_deep" },
+          { icon: "⚡", text: "サッと済ませて\n効率よく動きたい", value: "efficiency" },
+          { icon: "👨‍👩‍👧‍👦", text: "家族との\nコミュニケーション", value: "family" },
+          { icon: "🚿", text: "自分だけの\nこだわり空間", value: "personal_relax" }
+        ]
+      },
+      {
+        id: 3,
+        text: "お掃除を「ラク」にする機能、どれくらい興味がありますか？",
+        options: [
+          { icon: "✨", text: "絶対に欲しい！\n自動洗浄なども検討", value: "auto_clean_interest" },
+          { icon: "🧹", text: "ある程度ラクに\nなれば嬉しい", value: "easy_clean_priority" },
+          { icon: "💪", text: "自分でしっかり\n掃除したい", value: "manual_clean" }
+        ]
+      },
+      {
+        id: 4,
+        text: "お風呂の「温かさ（断熱）」について、どう思いますか？",
+        options: [
+          { icon: "🔥", text: "とにかく温かさ重視！\n冷めにくい浴槽も必須", value: "insulation" },
+          { icon: "🌡️", text: "標準的な温かさが\nあれば十分", value: "standard_warm" },
+          { icon: "💸", text: "温かさより\nコストを抑えたい", value: "heat_cost" }
+        ]
+      },
+      {
+        id: 5,
+        text: "節水や節電などの「エコ機能」は重視しますか？",
+        options: [
+          { icon: "💰", text: "毎月のランニングコストは\nできるだけ抑えたい", value: "cost_priority" },
+          { icon: "⚖️", text: "気になるが\n快適さを優先したい", value: "comfort_priority" },
+          { icon: "🌟", text: "あまり意識していない", value: "not_concerned" }
+        ]
+      },
+      {
+        id: 6,
+        text: "お風呂の「空間」で一番近いイメージはどれですか？",
+        options: [
+          { icon: "🏨", text: "ホテルライクで\n高級感のある空間", value: "luxury_hotel" },
+          { icon: "✨", text: "明るく清潔感の\nある空間", value: "bright_clean" },
+          { icon: "🌳", text: "木のぬくもりを\n感じる空間", value: "natural_wood" },
+          { icon: "🎯", text: "鏡やカウンターを減らした\nスッキリ空間", value: "minimalist" }
+        ]
+      },
+      {
+        id: 7,
+        text: "直感で「好き」なお風呂のイメージを選んでください",
+        options: [
+          { icon: "💎", text: "明るく上品な\nストーン調", value: "stone" },
+          { icon: "🌲", text: "木のぬくもり\nナチュラルウッド調", value: "natural_wood_style" },
+          { icon: "🖤", text: "落ち着いた\nブラックシック調", value: "black_chic" }
+        ]
+      },
+      {
+        id: 8,
+        text: "新しいお風呂にこれだけは譲れない、と思うものを【2つまで】選んでください",
+        maxSelections: 2,
+        options: [
+          { icon: "🔥", text: "寒さから\n解放されたい", value: "warm" },
+          { icon: "✨", text: "掃除から\n解放されたい", value: "easy_maintenance" },
+          { icon: "💰", text: "水道・光熱費を\n抑えたい", value: "utility_save" },
+          { icon: "🧘", text: "癒しの空間に\n変えたい", value: "healing" },
+          { icon: "🎨", text: "見た目を\n新しくしたい", value: "aesthetic" },
+          { icon: "💭", text: "なんとなく\n気になっている", value: "curious" }
+        ]
+      }
+    ];
+
+    let currentQuestion = 0;
+    let answers = {};
+    let selectedOptions = [];
+
+    function startDiagnosis(){
+      document.getElementById('startScreen').classList.add('hidden');
+      document.getElementById('questionScreen').classList.remove('hidden');
+      showQuestion();
     }
-  ];
 
-  const productImages = {
-    'サザナ': { main: 'https://i.imgur.com/xdQVq0N.png', sub: 'https://i.imgur.com/quvtqCQ.png' },
-    'シンラ': { main: 'https://i.imgur.com/A2hRr0s.png', sub: 'https://i.imgur.com/JfPpbvJ.png' },
-    'リデア': { main: 'https://i.imgur.com/ENM59T6.png', sub: 'https://i.imgur.com/LKbKQ3M.png' },
-    'スパージュ': { main: 'https://i.imgur.com/PC1fALn.png', sub: '' },
-    'グランスパ': { main: 'https://i.imgur.com/Rjhtb77.png', sub: '' },
-    'ラクヴィア': { main: 'https://i.imgur.com/JammMXT.png', sub: '' },
-    'セレヴィア': { main: 'https://i.imgur.com/gc6Qat0.png', sub: '' },
-    'every': { main: 'https://i.imgur.com/UUR1X1j.png', sub: '' },
-    'AXIY': { main: 'https://i.imgur.com/P6lkQtn.png', sub: '' }
-  };
+    function showQuestion(){
+      const q = questions[currentQuestion];
+      const progress = ((currentQuestion + 1) / questions.length) * 100;
+      document.getElementById('progressFill').style.width = progress + '%';
+      document.getElementById('questionNumber').textContent = `質問 ${currentQuestion + 1}/${questions.length}`;
+      document.getElementById('questionText').textContent = q.text;
 
-  let currentQuestion = 0;
-  let answers = {};
-  let selectedOption = null;
-  let selectedOptions = [];
-
-  function startDiagnosis(){
-    document.getElementById('startScreen').style.display = 'none';
-    document.getElementById('questionScreen').style.display = 'block';
-    currentQuestion = 0;
-    answers = {};
-    selectedOption = null;
-    selectedOptions = [];
-    showQuestion();
-  }
-
-  function showQuestion(){
-    const q = questions[currentQuestion];
-    const progress = ((currentQuestion + 1) / questions.length) * 100;
-    document.getElementById('progressFill').style.width = progress + '%';
-    document.getElementById('questionNumber').textContent = `質問 ${currentQuestion + 1}/${questions.length}`;
-    document.getElementById('questionText').textContent = q.text;
-
-    const optionsContainer = document.getElementById('optionsContainer');
-    optionsContainer.innerHTML = '';
-
-    const isMulti = q.maxSelections && q.maxSelections > 1;
-
-    q.options.forEach((opt, idx) => {
-      const card = document.createElement('div');
-      card.className = 'option-card';
-      card.innerHTML = `
-        <div class="option-icon">${opt.icon}</div>
-        <div class="option-text">${opt.text}</div>
-      `;
-      card.onclick = isMulti
-        ? () => selectMultipleOptions(idx, opt.value, q.maxSelections)
-        : () => selectOption(idx, opt.value);
-      optionsContainer.appendChild(card);
-    });
-
-    if (isMulti){
+      const container = document.getElementById('optionsContainer');
+      container.innerHTML = '';
+      
       selectedOptions = answers[q.id] || [];
-      const cards = document.querySelectorAll('.option-card');
-      selectedOptions.forEach(v => {
-        const i = q.options.findIndex(o => o.value === v);
-        if (i !== -1) cards[i].classList.add('selected');
+
+      q.options.forEach((opt, idx) => {
+        const card = document.createElement('div');
+        card.className = 'option-card' + (selectedOptions.includes(opt.value) ? ' selected' : '');
+        card.innerHTML = `<div class="option-icon">${opt.icon}</div><div class="option-text">${opt.text}</div>`;
+        card.onclick = () => toggleOption(opt.value, q.maxSelections || 1);
+        container.appendChild(card);
       });
-    }else{
-      selectedOption = answers[q.id] || null;
-      if (selectedOption){
-        const i = q.options.findIndex(o => o.value === selectedOption);
-        if (i !== -1){
-          const cards = document.querySelectorAll('.option-card');
-          cards[i].classList.add('selected');
+      updateNav();
+    }
+
+    function toggleOption(val, max){
+      if(max === 1){
+        selectedOptions = [val];
+      } else {
+        if(selectedOptions.includes(val)){
+          selectedOptions = selectedOptions.filter(v => v !== val);
+        } else if(selectedOptions.length < max){
+          selectedOptions.push(val);
         }
       }
+      answers[questions[currentQuestion].id] = selectedOptions;
+      showQuestion();
     }
 
-    updateNavigationButtons();
-  }
+    function updateNav(){
+      document.getElementById('backButton').disabled = currentQuestion === 0;
+      document.getElementById('nextButton').disabled = selectedOptions.length === 0;
+    }
 
-  function selectOption(index, value){
-    const cards = document.querySelectorAll('.option-card');
-    cards.forEach((c,i)=>c.classList.toggle('selected', i===index));
-    selectedOption = value;
-    answers[questions[currentQuestion].id] = value;
-    updateNavigationButtons();
-  }
-
-  function selectMultipleOptions(index, value, maxSelections){
-    const cards = document.querySelectorAll('.option-card');
-    const card = cards[index];
-
-    if (selectedOptions.includes(value)){
-      selectedOptions = selectedOptions.filter(v => v !== value);
-      card.classList.remove('selected');
-    }else{
-      if (selectedOptions.length < maxSelections){
-        selectedOptions.push(value);
-        card.classList.add('selected');
+    function goBack(){
+      if(currentQuestion > 0){
+        currentQuestion--;
+        showQuestion();
       }
     }
-    answers[questions[currentQuestion].id] = selectedOptions;
-    updateNavigationButtons();
-  }
 
-  function updateNavigationButtons(){
-    const q = questions[currentQuestion];
-    const isMulti = q.maxSelections && q.maxSelections > 1;
-
-    document.getElementById('backButton').disabled = currentQuestion === 0;
-    document.getElementById('nextButton').disabled = isMulti ? (selectedOptions.length < 1) : (selectedOption === null);
-  }
-
-  function goBack(){
-    if (currentQuestion <= 0) return;
-    currentQuestion--;
-    const q = questions[currentQuestion];
-    const isMulti = q.maxSelections && q.maxSelections > 1;
-    if (isMulti) selectedOptions = answers[q.id] || [];
-    else selectedOption = answers[q.id] || null;
-    showQuestion();
-  }
-
-  function goNext(){
-    const q = questions[currentQuestion];
-    const isMulti = q.maxSelections && q.maxSelections > 1;
-    const isAnswered = isMulti ? (selectedOptions.length > 0) : (selectedOption !== null);
-
-    if (!isAnswered) return;
-
-    if (currentQuestion < questions.length - 1){
-      currentQuestion++;
-      const nextQ = questions[currentQuestion];
-      const nextIsMulti = nextQ.maxSelections && nextQ.maxSelections > 1;
-      if (nextIsMulti) selectedOptions = answers[nextQ.id] || [];
-      else selectedOption = answers[nextQ.id] || null;
-      showQuestion();
-    }else{
-      document.getElementById('questionScreen').style.display = 'none';
-      document.getElementById('resultScreen').style.display = 'block';
-      calculateResult();
-    }
-  }
-
-  function calculateResult(){
-    document.getElementById('resultLoading').style.display = 'block';
-    document.getElementById('resultContent').style.display = 'none';
-
-    const allAnswers = Object.values(answers).flat();
-    const counts = allAnswers.reduce((acc, val) => {
-      acc[val] = (acc[val] || 0) + 1;
-      return acc;
-    }, {});
-
-    let resultProduct = 'サザナ';
-    let resultDesc = 'お客様の回答から、**サザナ**が最も適していると診断されました。サザナは、快適とエコを両立した機能が充実しており、多くの方におすすめできるモデルです。';
-
-    if (counts['relax_deep'] || counts['personal_relax'] || counts['luxury_hotel']){
-      resultProduct = 'シンラ';
-      resultDesc = 'お客様は、お風呂での**リラックスタイム**を特に重視されているようです。**シンラ**は、上質なデザインとリラックス機能を兼ね備えた最高級モデルです。';
-    } else if (counts['easy_clean'] || counts['easy_clean_priority'] || counts['auto_clean_interest']){
-      resultProduct = 'リデア';
-      resultDesc = 'お客様は、**お手入れのしやすさ**を重視されているようです。**リデア**は、日々の掃除をラクにする機能が充実したモデルです。';
-    } else if (counts['warm'] || counts['insulation'] || counts['heat_cost']){
-      resultProduct = 'スパージュ';
-      resultDesc = 'お客様は、**温かさ**と**快適性**を重視されているようです。**スパージュ**は、高い断熱性能で冬でも快適なバスタイムを実現します。';
+    function goNext(){
+      if(currentQuestion < questions.length - 1){
+        currentQuestion++;
+        showQuestion();
+      } else {
+        showResult();
+      }
     }
 
-    setTimeout(() => {
-      document.getElementById('resultLoading').style.display = 'none';
-      document.getElementById('resultContent').style.display = 'block';
-      document.getElementById('resultProduct').textContent = resultProduct;
-      document.getElementById('resultDescription').innerHTML = resultDesc.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    function showResult(){
+      document.getElementById('questionScreen').classList.add('hidden');
+      document.getElementById('resultScreen').classList.remove('hidden');
+      
+      setTimeout(() => {
+        document.getElementById('resultLoading').classList.add('hidden');
+        document.getElementById('resultContent').classList.remove('hidden');
+        
+        const all = Object.values(answers).flat();
+        let product = "サザナ";
+        let desc = "バランスの取れた機能性で、どなたにも使いやすい王道モデルです。";
+        
+        if(all.includes('relax_deep') || all.includes('luxury_hotel')){
+          product = "シンラ";
+          desc = "上質なリラックスを追求した最高級モデル。肩湯などの機能で至福の時間を。";
+        } else if(all.includes('cleaning') || all.includes('auto_clean_interest')){
+          product = "リデア";
+          desc = "お掃除のしやすさを徹底追求。家事の負担を減らしたい方に最適です。";
+        }
+        
+        document.getElementById('resultProduct').textContent = product;
+        document.getElementById('resultDescription').innerHTML = `お客様には<strong>${product}</strong>がおすすめです。<br>${desc}`;
+      }, 1500);
+    }
 
-      const images = productImages[resultProduct] || { main:'', sub:'' };
-      const mainImg = document.getElementById('resultImageMain');
-      const subImg = document.getElementById('resultImageSub');
+    function restartDiagnosis(){
+      window.location.href = "select.html";
+    }
 
-      mainImg.src = images.main || '';
-      mainImg.style.display = images.main ? 'block' : 'none';
-      mainImg.alt = `${resultProduct} (メイン)`;
+    function openLineWithMessage() {
+      const product = document.getElementById('resultProduct').textContent;
+      const message = encodeURIComponent(`診断結果：おすすめは「${product}」でした！詳細を教えてください。`);
+      window.open(`https://line.me/R/oaMessage/@YOUR_LINE_ID/?${message}`, '_blank');
+    }
 
-      subImg.src = images.sub || '';
-      subImg.style.display = images.sub ? 'block' : 'none';
-      subImg.alt = `${resultProduct} (サブ)`;
-    }, 1500);
-  }
-
-  function restartDiagnosis(){
-    window.location.href = "select.html";
-  }
-
-  function openLineWithMessage() {
-    const product = document.getElementById('resultProduct').textContent;
-    const message = encodeURIComponent(`診断結果：おすすめは「${product}」でした！\n詳細を教えてください。`);
-    window.open(`https://line.me/R/oaMessage/@YOUR_LINE_ID/?${message}`, '_blank');
-  }
-
-  function copyLineMessage() {
-    const product = document.getElementById('resultProduct').textContent;
-    const text = `診断結果：おすすめは「${product}」でした！詳細を教えてください。`;
-    navigator.clipboard.writeText(text).then(() => {
-      alert('メッセージをコピーしました！LINEに貼り付けて送ってください。');
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.getElementById('startButton');
-    if(btn) btn.textContent = "診断スタート";
-  });
-
-  </script>   
+    function copyLineMessage() {
+      const product = document.getElementById('resultProduct').textContent;
+      const text = `診断結果：おすすめは「${product}」でした！詳細を教えてください。`;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('コピーしました！');
+      });
+    }
+  </script>
 </body>
 </html>
+バスルームとキッチン診断ツールのコード修正依頼 - Manus
