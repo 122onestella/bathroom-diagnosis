@@ -67,6 +67,22 @@
       flex-direction: column;
     }
 
+    /* イラストエリア */
+    .illustration-container {
+      width: 100%;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: center;
+    }
+    .illustration-img {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      border-radius: 20px;
+      /* イメージ図に合わせた柔らかな影 */
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
     .question-text{
       font-size: var(--fs-q);
       color: var(--q-blue);
@@ -135,7 +151,6 @@
       margin-bottom: 20px;
     }
     
-    /* 画像表示エリア */
     .result-images {
       display: flex;
       flex-direction: column;
@@ -216,13 +231,20 @@
 
     <div class="content">
       
+      <!-- スタート画面 -->
       <section id="startScreen">
-        <p style="text-align: center; font-size: 20px; margin-bottom: 40px;">
+        <!-- イラストを追加 -->
+        <div class="illustration-container">
+          <img src="bathroom_illustration.png" class="illustration-img" alt="バスルームイラスト" />
+        </div>
+        
+        <p style="text-align: center; font-size: 20px; margin-bottom: 40px; line-height: 1.6;">
           簡単な質問に答えるだけで、<br>理想のバスルームをご提案します。
         </p>
         <button class="btn-base" style="width: 100%;" onclick="startDiagnosis()">診断スタート</button>
       </section>
 
+      <!-- 質問画面 -->
       <section id="questionScreen" class="hidden">
         <div class="progress-bar">
           <div id="progressFill" class="progress-fill" style="width:0%"></div>
@@ -230,11 +252,12 @@
         <h2 id="questionText" class="question-text">質問内容</h2>
         <div id="optionsContainer" class="options-grid"></div>
         <div class="navigation-buttons">
-          <button id="backButton" class="btn-base" onclick="goBack()" disabled>戻る</button>
+          <button id="backButton" class="btn-base" onclick="goBack()">戻る</button>
           <button id="nextButton" class="btn-base" onclick="goNext()" disabled>次へ</button>
         </div>
       </section>
 
+      <!-- 結果画面 -->
       <section id="resultScreen" class="hidden">
         <div class="result-container">
           <h2 style="font-size: 28px; margin-bottom: 20px;">診断結果</h2>
@@ -243,7 +266,6 @@
           <div id="resultContent" class="hidden">
             <div class="result-product" id="resultProduct"></div>
             
-            <!-- 画像表示エリアを復旧 -->
             <div class="result-images">
               <div class="image-wrapper">
                 <img id="resultImageMain" class="result-image" alt="おすすめ製品（メイン）" />
@@ -269,15 +291,18 @@
               
               <button class="btn-base btn-sub" onclick="copyLineMessage()">送信メッセージをコピー</button>
             </div>
-
-            <button class="btn-base btn-restart" onclick="restartDiagnosis()">もう一度
+<button class="btn-base btn-restart" onclick="goToIndex()">もう一度
 診断する</button>
+           
           </div>
         </div>
       </section>
 
     </div>
   </div>
+function goToIndex(){
+  window.location.href = "index.html";
+}
 
   <script>
     const questions = [
@@ -362,7 +387,6 @@
       }
     ];
 
-    // 画像URLデータ
     const productImages = {
       'サザナ': { main: 'https://i.imgur.com/xdQVq0N.png', sub: 'https://i.imgur.com/quvtqCQ.png' },
       'シンラ': { main: 'https://i.imgur.com/A2hRr0s.png', sub: 'https://i.imgur.com/JfPpbvJ.png' },
@@ -464,7 +488,6 @@
         document.getElementById('resultProduct').textContent = product;
         document.getElementById('resultDescription').innerHTML = `お客様には<strong>${product}</strong>がおすすめです。<br>${desc}`;
 
-        // 画像の反映処理を復旧
         const images = productImages[product] || { main: '', sub: '' };
         const mainImg = document.getElementById('resultImageMain');
         const subImg = document.getElementById('resultImageSub');
