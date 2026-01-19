@@ -292,18 +292,14 @@
               <button class="btn-base btn-sub" onclick="copyLineMessage()">送信メッセージをコピー</button>
             </div>
 
-           <button class="btn-base btn-restart" onclick="goToIndex()">もう一度
+            <button class="btn-base btn-restart" onclick="restartDiagnosis()">もう一度
 診断する</button>
-
           </div>
         </div>
       </section>
 
     </div>
   </div>
-function goToIndex(){
-  window.location.href = "index.html";
-}
 
   <script>
     const questions = [
@@ -379,7 +375,7 @@ function goToIndex(){
         maxSelections: 2,
         options: [
           { text: "寒さから\n解放されたい", value: "warm" },
-          { text: "掃除から\n解放されたい", value: "easy_maintenance" },
+          { text: "掃除 from\n解放されたい", value: "easy_maintenance" },
           { text: "水道・光熱費を\n抑えたい", value: "utility_save" },
           { text: "癒しの空間に\n変えたい", value: "healing" },
           { text: "見た目を\n新しくしたい", value: "aesthetic" },
@@ -511,7 +507,7 @@ function goToIndex(){
     }
 
     function restartDiagnosis(){
-      window.location.href = "select.html";
+      window.location.href = "index.html";
     }
 
     function openLineWithMessage() {
